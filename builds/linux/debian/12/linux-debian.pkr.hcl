@@ -64,7 +64,6 @@ locals {
   vm_guest_os_version = "12"
   vm_name             = "${local.vm_guest_os_family}.${local.vm_guest_os_name}${local.vm_guest_os_version}"
   vm_iso_file         = var.vm_iso_file == null ? join("/", ["local:iso", local.iso_file]) : null
-
   data_source_content = {
     "/preseed.cfg" = templatefile("${abspath(path.root)}/data/preseed.pkrtpl.hcl", {
       build_username           = var.build_username
@@ -77,8 +76,8 @@ locals {
     })
   }
   data_source_command = var.common_data_source == "http" ? local.http_ip : "file=/media/preseed.cfg"
-  mount_cdrom_command = "<leftAltOn><f2><leftAltOff> <enter><wait> mount /dev/sr1 /media<enter> <leftAltOn><f1><leftAltOff>"
-  mount_cdrom         = var.common_data_source == "http" ? " " : local.mount_cdrom_command
+  template_name = local.vm_name
+  template_description = "Base template for Debian 12"
 }
  
 source "file" "cloud-init" {
@@ -148,11 +147,6 @@ source "proxmox-iso" "linux-debian" {
   // Removable media settings
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
-  additional_iso_files {
-    iso_storage_pool = var.iso_storage_pool
-    cd_files         = concat(["${path.root}/config"], var.additional_cd_files)
-    cd_label         = var.cd_label
-  }
 
   // HTTP data
   http_content      = var.common_data_source == "http" ? local.data_source_content : null
@@ -186,6 +180,25 @@ source "proxmox-iso" "linux-debian" {
 build {
   sources = [
     "source.file.cloud-init",
-//    "source.proxmox-iso.linux-debian"
+    "source.proxmox-iso.linux-debian"
   ]
+
+  # provisioning the vm template for cloud-init integration in Proxmox
+  provisioner "file" {
+    source = "./files/99-pve.cfg"
+    destination = "/tmp/99-pve.cfg"
+  }
+
+  provisioner "file" {
+    source = "./config/cloud.cfg"
+    destination = "/tmp/cloud.cfg"
+  }
+
+  provisioner "shell" {
+    inline = ["sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg"]
+  }
+
+  provisioner "shell" {
+    inline = ["sudo cp /tmp/cloud.cfg /etc/cloud/cloud.cfg"]
+  }
 }
