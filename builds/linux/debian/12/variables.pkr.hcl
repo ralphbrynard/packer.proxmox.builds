@@ -322,9 +322,14 @@ variable "cd_content" {
 variable "cd_label" {
   type        = string
   description = "Label to attach to the attched CD's"
-  default     = null
+  default     = "cidata"
 }
 
+variable "iso_storage_pool" {
+    type = string
+    description = "The storage pool to upload the attached iso file to."
+    default = "local"
+}
 // HTTP data
 variable "http_content" {
   type        = string
