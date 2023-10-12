@@ -1,0 +1,152 @@
+2023/10/12 14:23:29 [INFO] Packer version: 1.9.4 [go1.21.0 linux amd64]
+2023/10/12 14:23:29 [TRACE] discovering plugins in 
+2023/10/12 14:23:29 [TRACE] discovering plugins in /home/linuxbrew/.linuxbrew/bin
+2023/10/12 14:23:29 [INFO] Discovered potential plugin: git = /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64
+2023/10/12 14:23:29 [INFO] Discovered potential plugin: ansible = /home/linuxbrew/.linuxbrew/bin/github.com/hashicorp/ansible/packer-plugin-ansible_v1.1.0_x5.0_linux_amd64
+2023/10/12 14:23:29 [INFO] Discovered potential plugin: proxmox = /home/linuxbrew/.linuxbrew/bin/github.com/hashicorp/proxmox/packer-plugin-proxmox_v1.1.5_x5.0_linux_amd64
+2023/10/12 14:23:29 [INFO] found external [-packer-default-plugin-name- clone iso] builders from proxmox plugin
+2023/10/12 14:23:29 found external [commit repository tree] datasource from git plugin
+2023/10/12 14:23:29 found external [-packer-default-plugin-name- local] provisioner from ansible plugin
+2023/10/12 14:23:29 [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/10/12 14:23:29 [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/debian/.packerconfig
+2023/10/12 14:23:29 [WARN] Config file doesn't exist: /home/debian/.packerconfig
+2023/10/12 14:23:29 [INFO] Setting cache directory: /home/debian/.cache/packer
+2023/10/12 14:23:29 [TRACE] listing potential installations for "github.com/hashicorp/ansible" that match "~> 1". plugingetter.ListInstallationsOptions{FromFolders:[]string{"", "/home/linuxbrew/.linuxbrew/bin"}, BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.digest)(0xc000725500)}}}}
+2023/10/12 14:23:29 [TRACE] Found the following "github.com/hashicorp/ansible" installations: [{/home/linuxbrew/.linuxbrew/bin/github.com/hashicorp/ansible/packer-plugin-ansible_v1.1.0_x5.0_linux_amd64 v1.1.0}]
+2023/10/12 14:23:29 found external [-packer-default-plugin-name- local] provisioner from ansible plugin
+2023/10/12 14:23:29 [TRACE] listing potential installations for "github.com/hashicorp/proxmox" that match ">= 1.1.3". plugingetter.ListInstallationsOptions{FromFolders:[]string{"", "/home/linuxbrew/.linuxbrew/bin"}, BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.digest)(0xc000725500)}}}}
+2023/10/12 14:23:29 [TRACE] Found the following "github.com/hashicorp/proxmox" installations: [{/home/linuxbrew/.linuxbrew/bin/github.com/hashicorp/proxmox/packer-plugin-proxmox_v1.1.5_x5.0_linux_amd64 v1.1.5}]
+2023/10/12 14:23:29 [INFO] found external [-packer-default-plugin-name- clone iso] builders from proxmox plugin
+2023/10/12 14:23:29 [TRACE] listing potential installations for "github.com/ethanmdavidson/git" that match ">= 0.4.3". plugingetter.ListInstallationsOptions{FromFolders:[]string{"", "/home/linuxbrew/.linuxbrew/bin"}, BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.digest)(0xc000725500)}}}}
+2023/10/12 14:23:29 [TRACE] Found the following "github.com/ethanmdavidson/git" installations: [{/home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64 v0.4.3}]
+2023/10/12 14:23:29 found external [commit repository tree] datasource from git plugin
+2023/10/12 14:23:29 [TRACE] validateValue: not active for http_port_max, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for ansible_password, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_api_token, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_resource_pool, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_min_mem_size, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_nic_mtu, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for boot_wait, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_ballooning, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_disable_kvm, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for ansible_key, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_guest_os_keyboard, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_disk_discard, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for build_username, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_guest_os_language, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_cpu_core_count, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for http_port_min, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for http_bind_address, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_name, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for http_interface, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for common_create_template, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for cd_content, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_guest_os_timezone, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_disk_size, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_interface, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_unmount_iso, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for ansible_username, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_node, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_cpu_count, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for enable_cloud_init, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_storage_pool, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_ssd, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for build_key, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_io_threading, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_qemu_agent, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for cd_label, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_number_of_queues, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_api_token_id, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for additional_cd_files, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for http_content, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for cloud_init_storage_pool, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_firewall, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for iso_storage_pool, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for common_data_source, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_nic_mac_address, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_iso_file, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_password, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_insecure_connection, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_enable_queues, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_start_on_boot, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_username, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_task_timeout, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_nic_bridge, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_nic_vlan, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for build_password, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for proxmox_url, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_id, so skipping
+2023/10/12 14:23:29 [TRACE] validateValue: not active for vm_mem_size, so skipping
+2023/10/12 14:23:29 [INFO] Starting external plugin /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64 start datasource repository
+2023/10/12 14:23:29 Starting plugin: /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64 []string{"/home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64", "start", "datasource", "repository"}
+2023/10/12 14:23:29 Waiting for RPC address for: /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Plugin address: unix /tmp/packer-plugin4035744658
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Waiting for connection...
+2023/10/12 14:23:29 Received unix RPC address for /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64: addr is /tmp/packer-plugin4035744658
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Serving a plugin connection...
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 [TRACE] starting datasource repository
+2023/10/12 14:23:29 [INFO] (telemetry) Starting datasource git-repository
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Starting execution
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Finding repository from '.' (/mnt/c/Users/Ralph.Brynard/github/packer.projects/builds/linux/debian/12)
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Repo opened
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Head found: 'a5190a0a09ae4d8854ee73eb6bae6c49848eed1b refs/heads/main'
+2023/10/12 14:23:29 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:29 Worktree found
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 Worktree status found: '?? builds/linux/debian/12/config/_cloud.pkrtpl.cfg
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/config/cloud.cfg
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: ?? builds/linux/debian/12/packer.log
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/variables.pkr.hcl
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M docker/start.sh
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/config/cloud.pkrtpl.cfg
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/data/preseed.pkrtpl.hcl
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/linux-debian.auto.pkrvars.hcl
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M builds/linux/debian/12/linux-debian.pkr.hcl
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin:  M docker/Dockerfile
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: '
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 Branches found
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 Tags found
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 output.Head: 'main'
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 output.IsClean: 'false'
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 Adding branch: 'main'
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 len(output.Branches): '1'
+2023/10/12 14:23:30 packer-plugin-git_v0.4.3_x5.0_linux_amd64 plugin: 2023/10/12 14:23:30 len(output.Tags): '0'
+2023/10/12 14:23:30 [INFO] (telemetry) ending git-repository
+2023/10/12 14:23:30 [INFO] Starting internal plugin packer-builder-file
+2023/10/12 14:23:30 Starting plugin: /home/linuxbrew/.linuxbrew/Cellar/packer/1.9.4/libexec/bin/packer []string{"/home/linuxbrew/.linuxbrew/Cellar/packer/1.9.4/libexec/bin/packer", "plugin", "packer-builder-file"}
+2023/10/12 14:23:30 Waiting for RPC address for: /home/linuxbrew/.linuxbrew/Cellar/packer/1.9.4/libexec/bin/packer
+2023/10/12 14:23:30 packer-builder-file plugin: [INFO] Packer version: 1.9.4 [go1.21.0 linux amd64]
+2023/10/12 14:23:30 packer-builder-file plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/10/12 14:23:30 packer-builder-file plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/<sensitive>/.packerconfig
+2023/10/12 14:23:30 packer-builder-file plugin: [WARN] Config file doesn't exist: /home/<sensitive>/.packerconfig
+2023/10/12 14:23:30 packer-builder-file plugin: [INFO] Setting cache directory: /home/<sensitive>/.cache/packer
+2023/10/12 14:23:30 packer-builder-file plugin: args: []string{"packer-builder-file"}
+2023/10/12 14:23:30 packer-builder-file plugin: Plugin address: unix /tmp/packer-plugin4248779904
+2023/10/12 14:23:30 packer-builder-file plugin: Waiting for connection...
+2023/10/12 14:23:30 Received unix RPC address for /home/linuxbrew/.linuxbrew/Cellar/packer/1.9.4/libexec/bin/packer: addr is /tmp/packer-plugin4248779904
+2023/10/12 14:23:30 packer-builder-file plugin: Serving a plugin connection...
+2023/10/12 14:23:30 ui: [1;32mfile.cloud-init: output will be in this color.[0m
+2023/10/12 14:23:30 ui: 
+2023/10/12 14:23:30 Build debug mode: false
+2023/10/12 14:23:30 Force build: false
+2023/10/12 14:23:30 On error: ask
+2023/10/12 14:23:30 Waiting on builds to complete...
+2023/10/12 14:23:30 Starting build run: file.cloud-init
+2023/10/12 14:23:30 Running builder: 
+2023/10/12 14:23:30 [INFO] (telemetry) Starting builder file.cloud-init
+2023/10/12 14:23:30 [INFO] (telemetry) ending file.cloud-init
+2023/10/12 14:23:30 ui: [1;32mBuild 'file.cloud-init' finished after 6 milliseconds 169 microseconds.[0m
+2023/10/12 14:23:30 ui: 
+==> Wait completed after 6 milliseconds 251 microseconds
+2023/10/12 14:23:30 ui: 
+==> Builds finished. The artifacts of successful builds are:
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact-count []string{"1"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "builder-id", "packer.file"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "id", "File"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "string", "Stored file: ./config/cloud.cfg"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "files-count", "1"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "file", "0", "./config/cloud.cfg"}
+2023/10/12 14:23:30 machine readable: file.cloud-init,artifact []string{"0", "end"}
+2023/10/12 14:23:30 ui: --> file.cloud-init: Stored file: ./config/cloud.cfg
+2023/10/12 14:23:30 [INFO] (telemetry) Finalizing.
+2023/10/12 14:23:30 waiting for all plugin processes to complete...
+2023/10/12 14:23:30 /home/linuxbrew/.linuxbrew/bin/github.com/ethanmdavidson/git/packer-plugin-git_v0.4.3_x5.0_linux_amd64: plugin process exited
+2023/10/12 14:23:30 /home/linuxbrew/.linuxbrew/Cellar/packer/1.9.4/libexec/bin/packer: plugin process exited

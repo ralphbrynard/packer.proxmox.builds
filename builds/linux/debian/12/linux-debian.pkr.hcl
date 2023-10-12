@@ -36,7 +36,7 @@ locals {
   ansible_password_encrypted = bcrypt(var.ansible_password)
   build_password_encrypted   = bcrypt(var.build_password)
 
-  additional_cd_files = ["./config/cloud.cfg"]
+  additional_cd_files = ["./config/"]
 
   boot_command = [
     "<esc><wait>",
@@ -51,17 +51,18 @@ locals {
   http_ip = var.http_bind_address == null ? "{{ .HTTPIP }}" : var.http_bind_address
 
   iso_file = "debian-12.1.0-amd64-netinst.iso"
-
+  iso_target_path = "${path.root}"
+  iso_target_extension = "iso"
   manifest_date   = formatdate("YYYY-MM-DD hh:mm:ss", timestamp())
   manifest_path   = "${path.cwd}/manifests/"
   manifest_output = "${local.manifest_path}${local.manifest_date}.json"
 
-  proxmox_username = !(var.proxmox_api_token == null) ? join("!", [var.proxmox_username, var.proxmox_token_id]) : var.proxmox_username
+  proxmox_username = !(var.proxmox_api_token == null) ? join("!", [var.proxmox_username, var.proxmox_api_token_id]) : var.proxmox_username
 
   vm_guest_os_family  = "linux"
   vm_guest_os_name    = "debian"
   vm_guest_os_version = "12"
-  vm_name             = "${local.vm_guest_os_family}_${local.vm_guest_os_name}_${local.vm_guest_os_version}_${local.build_version}"
+  vm_name             = "${local.vm_guest_os_family}.${local.vm_guest_os_name}${local.vm_guest_os_version}"
   vm_iso_file         = var.vm_iso_file == null ? join("/", ["local:iso", local.iso_file]) : null
 
   data_source_content = {
@@ -85,7 +86,12 @@ source "file" "cloud-init" {
       ansible_username = var.ansible_username
       ansible_password = local.ansible_password_encrypted
       ansible_key      = var.ansible_key != null ? var.ansible_key : ""
+      build_username = var.build_username
+      build_password = local.build_password_encrypted
       build_key        = var.build_key != null ? var.build_key : ""
+      vm_guest_os_language     = var.vm_guest_os_language
+      vm_guest_os_keyboard     = var.vm_guest_os_keyboard
+      vm_guest_os_timezone     = var.vm_guest_os_timezone
     })
     target = "${path.root}/config/cloud.cfg"
 }
@@ -142,11 +148,9 @@ source "proxmox-iso" "linux-debian" {
   // Removable media settings
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
-
   additional_iso_files {
-    iso_storage_pool = var.vm_storage_pool
-    cd_files         = concat(local.additional_cd_files, var.additional_cd_files)
-    cd_content       = var.common_data_source == "disk" ? local.data_source_content : null
+    iso_storage_pool = var.iso_storage_pool
+    cd_files         = concat(["${path.root}/config"], var.additional_cd_files)
     cd_label         = var.cd_label
   }
 
@@ -159,11 +163,15 @@ source "proxmox-iso" "linux-debian" {
 
   // Cloud init settings
   cloud_init              = var.enable_cloud_init
-  cloud_init_storage_pool = var.cloud_init_storage_pool
+  cloud_init_storage_pool = var.iso_storage_pool
 
   // Boot settings
   boot_wait    = var.boot_wait
-  boot_command = local.boot_command
+    boot_command = [
+    "<esc><wait>",
+    "auto preseed/url=http://${local.http_ip}:{{ .HTTPPort }}/preseed.cfg",
+    "<enter>"
+  ]
 
   // Communicator settings and credentials
   communicator = "ssh"
@@ -178,6 +186,6 @@ source "proxmox-iso" "linux-debian" {
 build {
   sources = [
     "source.file.cloud-init",
-    "source.proxmox-iso.linux-debian"
+//    "source.proxmox-iso.linux-debian"
   ]
 }
