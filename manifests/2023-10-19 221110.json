@@ -1,0 +1,27 @@
+{
+  "builds": [
+    {
+      "name": "linux-debian",
+      "builder_type": "proxmox-iso",
+      "files": null,
+      "artifact_id": "100",
+      "packer_run_uuid": "952ab832-4058-27b5-5e86-2d6f1b683c7f",
+      "custom_data": {
+        "ansible_username": "ansible",
+        "build_username": "debian",
+        "build_version": "main",
+        "proxmox_node": "hades",
+        "proxmox_url": "https://10.1.0.148:8006/api2/json",
+        "vm_cpu_cores": "2",
+        "vm_disk_size": "32G",
+        "vm_guest_os_family": "linux",
+        "vm_guest_os_name": "debian",
+        "vm_guest_os_version": "12",
+        "vm_mem_size": "4096",
+        "vm_nic_model": "e1000",
+        "vmp_cpu_count": "2"
+      }
+    }
+  ],
+  "last_run_uuid": "952ab832-4058-27b5-5e86-2d6f1b683c7f"
+}
