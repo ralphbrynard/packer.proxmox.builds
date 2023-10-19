@@ -9,9 +9,9 @@
 
 // Proxmox Credentials
 variable "proxmox_url" {
-    type = string
-    description = "The URL to the Proxmox API endpoint."
-    default = null
+  type        = string
+  description = "The URL to the Proxmox API endpoint."
+  default     = null
 }
 
 variable "proxmox_username" {
@@ -326,9 +326,9 @@ variable "cd_label" {
 }
 
 variable "iso_storage_pool" {
-    type = string
-    description = "The storage pool to upload the attached iso file to."
-    default = "local"
+  type        = string
+  description = "The storage pool to upload the attached iso file to."
+  default     = "local"
 }
 // HTTP data
 variable "http_content" {
@@ -352,6 +352,12 @@ variable "http_port_min" {
 variable "http_bind_address" {
   type        = string
   description = "The address to use for the HTTP server."
+  default     = null
+}
+
+variable "http_ip" {
+  type        = string
+  description = "A custom IP address to use in the boot command."
   default     = null
 }
 
@@ -399,13 +405,13 @@ variable "build_key" {
   type        = string
   description = "The SSH Public Key to use for the build."
   default     = null
+  sensitive   = true
 }
 
 variable "ansible_username" {
   type        = string
   description = "The Ansible provisioner username."
   default     = "ansible"
-  sensitive   = true
 }
 
 variable "ansible_password" {
@@ -419,6 +425,14 @@ variable "ansible_key" {
   type        = string
   description = "The SSH Public Key to use for the Ansible provisioner."
   default     = null
+  sensitive   = true
+}
+
+variable "root_password" {
+  type        = string
+  description = "The password to use for the root user."
+  default     = null
+  sensitive   = true
 }
 
 // Common variables

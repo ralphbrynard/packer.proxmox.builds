@@ -164,18 +164,27 @@ d-i mirror/http/proxy string
 
 # Build User Configuration
 d-i passwd/root-login boolean false
+d-i passwd/root-password-crypted ${root_password}
 d-i passwd/user-fullname string ${build_username}
 d-i passwd/username string ${build_username}
 d-i passwd/user-password-crypted password ${build_password_encrypted}
 
 # Package Configuration
+d-i pkgsel/update-policy select none
 d-i pkgsel/run_tasksel boolean false
-d-i pkgsel/include string qemu-guest-agent cloud-init openssh-server open-vm-tools python3-apt perl
+d-i pkgsel/include string qemu-guest-agent cloud-init openssh-server sudo open-vm-tools python3-apt perl python3-pip python3
 
 # Add Build User to Sudoers
 d-i preseed/late_command string \
-    echo '${build_username} ALL=(ALL) NOPASSWD: ALL' > /target/etc/sudoers.d/${build_username} ; \
-    in-target chmod 440 /etc/sudoers.d/${build_username} ;
+    echo '${build_username} ALL=(ALL) NOPASSWD: ALL' > /target/etc/sudoers.d/${build_username}; \
+    in-target chmod 440 /etc/sudoers.d/${build_username}; \
+    in-target mkdir -p /home/${build_username}/.ssh; \
+    in-target mkdir -p /root/.ssh; \
+    in-target /bin/sh -c "echo ${temp_build_key} >> /root/.ssh/authorized_keys"; \
+    in-target /bin/sh -c "echo ${temp_build_key} >> /home/${build_username}/.ssh/authorized_keys"; \
+    in-target /bin/sh -c "echo ${build_key} >> /home/${build_username}/.ssh/authorized_keys"; \
+#    in-target sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config;  \
+    in-target sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config; 
 
 %{ if common_data_source == "disk" ~}
 # Umount preseed media early

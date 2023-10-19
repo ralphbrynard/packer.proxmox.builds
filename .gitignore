@@ -1,0 +1,9 @@
+.gitsecret/keys/random_seed
+!*.secret
+id_ecdsa_ansible
+id_ecdsa_ansible.pub
+id_ecdsa_debian
+id_ecdsa_debian.pub
+**packer_cache
+id_ecdsa_packer
+id_ecdsa_packer.pub
