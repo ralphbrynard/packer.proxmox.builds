@@ -535,7 +535,7 @@ locals {
       common_data_source       = var.common_data_source
     })
   }
-  data_source_command  = var.common_data_source == "http" ? local.http_ip : "file=/media/preseed.cfg"
+  data_source_command  = var.common_data_source == "http" ? "auto preseed/url=http://${local.http_ip}:{{ .HTTPPort }}/preseed.cfg" : "file=/media/preseed.cfg"
   template_name        = local.vm_name
   template_description = local.build_description
 }
@@ -592,6 +592,15 @@ source "proxmox-iso" "linux-debian" {
   // Removable media settings
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
+  dynamic "additional_iso_files" {
+    for_each = var.common_data_source == "disk" ? [1] : [0]
+    content {
+      unmount          = true
+      iso_storage_pool = var.cloud_init_storage_pool
+      cd_content       = local.data_source_content
+      cd_label = "media"
+    }
+  }
 
   // HTTP data
   http_content      = var.common_data_source == "http" ? local.data_source_content : null
@@ -608,7 +617,7 @@ source "proxmox-iso" "linux-debian" {
   boot_wait = var.boot_wait
   boot_command = [
     "<esc><wait>",
-    "auto preseed/url=http://${local.http_ip}:{{ .HTTPPort }}/preseed.cfg",
+    "${local.data_source_command}",
     "<enter>"
   ]
 
