@@ -6,6 +6,11 @@
 
 //  BLOCK: variable
 //  Defines the input variables.
+variable "build_version" {
+  type        = string
+  description = "The version of the build"
+  default     = null
+}
 
 // Proxmox Credentials
 variable "proxmox_url" {
@@ -485,8 +490,6 @@ data "sshkey" "install" {
   name = var.build_username
 }
 
-data "git-repository" "cwd" {}
-
 //  BLOCK: locals
 //  Defines the local variables.
 
@@ -503,7 +506,7 @@ locals {
   ]
   build_by          = "Built by: HashiCorp Packer ${packer.version}"
   build_date        = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_version     = data.git-repository.cwd.head
+  build_version     = var.build_version
   build_description = "Version: ${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}"
 
   http_ip = var.http_ip == null ? "{{ .HTTPIP }}" : var.http_ip
@@ -613,9 +616,9 @@ source "proxmox-iso" "linux-debian" {
   ]
 
   // Communicator settings and credentials
-  communicator         = "ssh"
-  ssh_username         = var.build_username
-  ssh_password         = var.build_password
+  communicator = "ssh"
+  ssh_username = var.build_username
+  ssh_password = var.build_password
   #ssh_private_key_file = data.sshkey.install.private_key_path
 
   // Template settings
@@ -641,7 +644,7 @@ build {
   }
 
   provisioner "file" {
-    source = "${path.root}/files/99-pve.cfg"
+    source      = "${path.root}/files/99-pve.cfg"
     destination = "/tmp/99-pve.cfg"
   }
 
