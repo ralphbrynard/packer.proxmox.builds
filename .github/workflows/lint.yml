@@ -27,7 +27,7 @@ jobs:
           path: ${{ matrix.build_path }}
           ext: ".pkr.hcl"
 
-  Test:
+  packer-lint:
     needs: list-files
     runs-on: self-hosted
     strategy:
@@ -35,9 +35,18 @@ jobs:
         paths: ${{ fromJson(needs.list-files.outputs.paths) }}
     
     steps:
-      - name: Output results
-        run: | 
-          echo ${{ matrix.paths }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PACKER_VERSION }}
+      
+      - name: Run `packer init`
+        id: init
+        run: packer init ${{ matrix.paths }}
 
 
 
