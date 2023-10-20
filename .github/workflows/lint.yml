@@ -1,0 +1,35 @@
+name: Packer Validate and Format
+
+on:
+  push:
+
+env:
+  PACKER_VERSION: "1.9.4"
+
+
+jobs:
+  packer_lint:
+    runs-on: self-hosted
+    name: packer validate and format
+    strategy:
+        matrix:
+          build_path:
+            - ./builds/linux/debian/12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PACKER_VERSION }}
+      
+      - name: packer init
+        id: init
+        working-directory: ${{ matrix.build_path }}
+        run: packer init
+
+  
+
