@@ -8,28 +8,37 @@ env:
 
 
 jobs:
-  packer_lint:
+  list-files:
     runs-on: self-hosted
-    name: packer validate and format
     strategy:
-        matrix:
-          build_path:
-            - ./builds/linux/debian/12
+      matrix:
+        build_path:
+          - ./builds/linux/debian/12
+    outputs:
+      paths: ${{ steps.list-files.outputs.paths }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
-      - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
-        id: setup
+      - name: List Files
+        id: list-files
+        uses: mirko-felice/list-files-action@v3.0.5
         with:
-          version: ${{ env.PACKER_VERSION }}
-      
-      - name: packer init
-        id: init
-        working-directory: ${{ matrix.build_path }}
-        run: packer init
+          repo: ${{ github.repository }}
+          path: ${{ matrix.build_path }}
+          ext: ".pkr.hcl"
+
+  Test:
+    needs: list-files
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        paths: ${{ fromJson(needs.list-files.outputs.paths) }}
+    
+    steps:
+      - name: Output results
+        run: | 
+          echo ${{ matrix.paths }}
+
+
 
   
 
