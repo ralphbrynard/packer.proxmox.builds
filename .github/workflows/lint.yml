@@ -20,6 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
+      - name: Install Unzip
+        run: sudo apt-get -y install unzip
+      
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         id: setup
