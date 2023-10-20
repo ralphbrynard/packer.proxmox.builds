@@ -677,13 +677,13 @@ build {
       ansible_username    = var.ansible_username
       build_username      = var.build_username
       build_version       = local.build_version
-      vm_cpu_cores        = var.vm_cpu_core_count
-      vmp_cpu_count       = var.vm_cpu_count
+      vm_cpu_cores        = !(var.vm_cpu_core_count == null) ? var.vm_cpu_core_count : 2
+      vmp_cpu_count       = !(var.vm_cpu_count == null) ? var.vm_cpu_count : 2
       vm_disk_size        = var.vm_disk_size
       vm_guest_os_family  = local.vm_guest_os_family
       vm_guest_os_name    = local.vm_guest_os_name
       vm_guest_os_version = local.vm_guest_os_version
-      vm_mem_size         = var.vm_mem_size
+      vm_mem_size         = !(var.vm_mem_size == null) ? var.vm_mem_size : 2048
       vm_nic_model        = var.vm_nic_model
       proxmox_url         = var.proxmox_url
       proxmox_node        = var.proxmox_node
