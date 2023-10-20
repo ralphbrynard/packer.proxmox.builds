@@ -493,7 +493,6 @@ data "git-repository" "cwd" {}
 locals {
   ansible_password_encrypted = bcrypt(var.ansible_password)
   build_password_encrypted   = bcrypt(var.build_password)
-  root_password_encrypted    = bcrypt(var.root_password)
 
   additional_cd_files = ["./config/"]
 
@@ -525,7 +524,6 @@ locals {
   vm_iso_file         = var.vm_iso_file == null ? join("/", ["local:iso", local.iso_file]) : null
   data_source_content = {
     "/preseed.cfg" = templatefile("${abspath(path.root)}/data/preseed.pkrtpl.hcl", {
-      root_password            = local.root_password_encrypted
       build_username           = var.build_username
       build_password           = var.build_password
       build_password_encrypted = local.build_password_encrypted

@@ -164,7 +164,6 @@ d-i mirror/http/proxy string
 
 # Build User Configuration
 d-i passwd/root-login boolean false
-d-i passwd/root-password-crypted ${root_password}
 d-i passwd/user-fullname string ${build_username}
 d-i passwd/username string ${build_username}
 d-i passwd/user-password-crypted password ${build_password_encrypted}
