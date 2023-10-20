@@ -641,7 +641,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "${path.root}/files/99-pve.cfg"
+    source = "${path.root}/files/99-pve.cfg"
     destination = "/tmp/99-pve.cfg"
   }
 

@@ -64,6 +64,10 @@ jobs:
       - name: Run `packer fmt`
         id: fmt
         run: packer fmt ${{ matrix.paths }}
+      
+      - name: View fmt output
+        run: |
+          echo ${{ steps.fmt.outputs.stdout || steps.fmt.outputs.stderr }}
 
 
 
