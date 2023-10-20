@@ -5,20 +5,6 @@ on:
 
 env:
   PACKER_VERSION: "1.9.4"
-  PROXMOX_URL: ${{ secrets.PROXMOX_URL }}
-  PROXMOX_USERNAME: ${{ secrets.PROXMOX_USERNAME }}
-  PROXMOX_API_TOKEN_ID: ${{ secrets.PROXMOX_API_TOKEN_ID }}
-  PROXMOX_API_TOKEN: ${{ secrets.PROXMOX_API_TOKEN }}
-  PROXMOX_NODE: ${{ secrets.PROXMOX_NODE }}
-  PROXMOX_RESOURCE_POOL: ${{ secrets.PROXMOX_RESOURCE_POOL }}
-  CLOUD_INIT_STORAGE_POOL: ${{ secrets.CLOUD_INIT_STORAGE_POOL }}
-  BUILD_USERNAME: ${{ secrets.BUILD_USERNAME }}
-  BUILD_PASSWORD: ${{ secrets.BUILD_PASSWORD }}
-  BUILD_KEY: ${{ secrets.BUILD_KEY }}
-  ANSIBLE_USERNAME: ${{ secrets.ANSIBLE_USERNAME }}
-  ANSIBLE_PASSWORD: ${{ secrets.ANSIBLE_PASSWORD }}
-  ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
-  HTTP_IP: ${{ secrets.HTTP_IP }}
 
 jobs:
   list-files:
@@ -61,13 +47,34 @@ jobs:
         id: init
         run: packer init ${{ matrix.paths }}
       
-      - name: Run `packer fmt`
+      - name: Run `packer validate`
         id: fmt
-        run: packer fmt ${{ matrix.paths }}
+        run: | 
+          packer validate \
+            -var proxmox_url=${{ secrets.PROXMOX_URL }} \
+            -var proxmox_username=${{ secrets.PROXMOX_USERNAME }} \
+            -var proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }} \
+            -var proxmox_api_token_id=${{ secrets.PROXMOX_API_TOKEN }} \
+            -var proxmox_node=${{ secrets.PROXMOX_NODE }} \
+            -var proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }} \
+            -var vm_mem_size=4096 \
+            -var vm_cpu_core_count=2 \
+            -var vm_cpu_count=2 \
+            -var vm_os=l26 \
+            -var vm_nic_vlan=12 \
+            -var vm_scsi_controller=virtio-scsi-single \
+            -var vm_storage_pool=local-lvm \
+            -var enable_cloud_init=true \
+            -var cloud_init_storage_pool=${{ secrets.CLOUD_INIT_STORAGE_POOL }} \
+            -var http_ip=${{ secrets.HTTP_IP }} \
+            -var build_username=${{ secrets.BUILD_USERNAME }} \
+            -var build_password=${{ secrets.BUILD_PASSWORD }} \
+            -var build_key=${{ secrets.BUILD_KEY }} \
+            -var ansible_username=${{ secrets.ANSIBLE_USERNAME }} \
+            -var ansible_password=${{ secrets.ANSIBLE_PASSWORD }} \
+            -var ansible_key=${{ secrets.ANSIBLE_KEY }} \
+            ${{ matrix.paths }}
       
-      - name: View fmt output
-        run: |
-          echo ${{ steps.fmt.outputs.stdout || steps.fmt.outputs.stderr }}
 
 
 
