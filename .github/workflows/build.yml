@@ -77,9 +77,9 @@ jobs:
           packer build \
             -var 'build_version=${{ github.ref_name }}' \
             -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
-            -var 'proxmox_username=${{ secrets.PROXMOX_USERNAME }}' \
+            -var 'proxmox_username=packer@pve' \
             -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
-            -var 'proxmox_api_token_id=${{ secrets.PROXMOX_API_TOKEN }}' \
+            -var 'proxmox_api_token_id=packer_api_token' \
             -var 'proxmox_node=${{ secrets.PROXMOX_NODE }}' \
             -var 'proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }}' \
             -var 'vm_nic_vlan=${{ secrets.VLAN_ID }}' \
