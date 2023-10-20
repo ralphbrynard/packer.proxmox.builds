@@ -5,6 +5,9 @@ on:
 
 env:
   PACKER_VERSION: "1.9.4"
+  PROXMOX_USERNAME: "packer@pve"
+  PROXMOX_API_TOKEN_ID: "packer_api_token"
+  PROXMOX_API_TOKEN: "${{ secrets.PROXMOX_API_TOKEN }}"
 
 jobs:
   list-files:
@@ -52,47 +55,47 @@ jobs:
         run: | 
           packer validate \
             -var 'build_version=${{ github.ref_name }}' \
-            -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
-            -var 'proxmox_username=${{ secrets.PROXMOX_USERNAME }}' \
-            -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
-            -var 'proxmox_api_token_id=${{ secrets.PROXMOX_API_TOKEN }}' \
-            -var 'proxmox_node=${{ secrets.PROXMOX_NODE }}' \
-            -var 'proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }}' \
-            -var 'vm_nic_vlan=${{ secrets.VLAN_ID }}' \
-            -var 'vm_scsi_controller=virtio-scsi-single' \
+            -var 'proxmox_url="${{ secrets.PROXMOX_URL }}"' \
+            -var 'proxmox_username="${{ env.PROXMOX_USERNAME }}"' \
+            -var 'proxmox_api_token="${{ secrets.PROXMOX_API_TOKEN_ID }}"' \
+            -var 'proxmox_api_token_id="${{ env.PROXMOX_API_TOKEN }}"' \
+            -var 'proxmox_node="${{ secrets.PROXMOX_NODE }}"' \
+            -var 'proxmox_resource_pool="${{ secrets.PROXMOX_RESOURCE_POOL }}"' \
+            -var 'vm_nic_vlan="${{ secrets.VLAN_ID }}"' \
+            -var 'vm_scsi_controller="virtio-scsi-single"' \
             -var 'enable_cloud_init=true' \
-            -var 'cloud_init_storage_pool=${{ secrets.CLOUD_INIT_STORAGE_POOL }}' \
-            -var 'http_ip=${{ secrets.HTTP_IP }}' \
-            -var 'build_username=${{ secrets.BUILD_USERNAME }}' \
-            -var 'build_password=${{ secrets.BUILD_PASSWORD }}' \
-            -var 'build_key=${{ secrets.BUILD_KEY }}' \
-            -var 'ansible_username=${{ secrets.ANSIBLE_USERNAME }}' \
-            -var 'ansible_password=${{ secrets.ANSIBLE_PASSWORD }}' \
-            -var 'ansible_key=${{ secrets.ANSIBLE_KEY }}' \
+            -var 'cloud_init_storage_pool="${{ secrets.CLOUD_INIT_STORAGE_POOL }}"' \
+            -var 'http_ip="${{ secrets.HTTP_IP }}"' \
+            -var 'build_username="${{ secrets.BUILD_USERNAME }}"' \
+            -var 'build_password="${{ secrets.BUILD_PASSWORD }}"' \
+            -var 'build_key="${{ secrets.BUILD_KEY }}"' \
+            -var 'ansible_username="${{ secrets.ANSIBLE_USERNAME }}"' \
+            -var 'ansible_password="${{ secrets.ANSIBLE_PASSWORD }}"' \
+            -var 'ansible_key="${{ secrets.ANSIBLE_KEY }}"' \
             ${{ matrix.paths }}
       
       - name: Run `packer build`
         id: build
         run: | 
           packer build \
-            -var 'build_version=${{ github.ref_name }}' \
-            -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
-            -var 'proxmox_username=packer@pve' \
-            -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
-            -var 'proxmox_api_token_id=packer_api_token' \
-            -var 'proxmox_node=${{ secrets.PROXMOX_NODE }}' \
-            -var 'proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }}' \
-            -var 'vm_nic_vlan=${{ secrets.VLAN_ID }}' \
-            -var 'vm_scsi_controller=virtio-scsi-single' \
-            -var 'enable_cloud_init=true' \
-            -var 'cloud_init_storage_pool=${{ secrets.CLOUD_INIT_STORAGE_POOL }}' \
-            -var 'http_ip=${{ secrets.HTTP_IP }}' \
-            -var 'build_username=${{ secrets.BUILD_USERNAME }}' \
-            -var 'build_password=${{ secrets.BUILD_PASSWORD }}' \
-            -var 'build_key=${{ secrets.BUILD_KEY }}' \
-            -var 'ansible_username=${{ secrets.ANSIBLE_USERNAME }}' \
-            -var 'ansible_password=${{ secrets.ANSIBLE_PASSWORD }}' \
-            -var 'ansible_key=${{ secrets.ANSIBLE_KEY }}' \
+          -var 'build_version=${{ github.ref_name }}' \
+          -var 'proxmox_url="${{ secrets.PROXMOX_URL }}"' \
+          -var 'proxmox_username="${{ env.PROXMOX_USERNAME }}"' \
+          -var 'proxmox_api_token="${{ secrets.PROXMOX_API_TOKEN_ID }}"' \
+          -var 'proxmox_api_token_id="${{ env.PROXMOX_API_TOKEN }}"' \
+          -var 'proxmox_node="${{ secrets.PROXMOX_NODE }}"' \
+          -var 'proxmox_resource_pool="${{ secrets.PROXMOX_RESOURCE_POOL }}"' \
+          -var 'vm_nic_vlan="${{ secrets.VLAN_ID }}"' \
+          -var 'vm_scsi_controller="virtio-scsi-single"' \
+          -var 'enable_cloud_init=true' \
+          -var 'cloud_init_storage_pool="${{ secrets.CLOUD_INIT_STORAGE_POOL }}"' \
+          -var 'http_ip="${{ secrets.HTTP_IP }}"' \
+          -var 'build_username="${{ secrets.BUILD_USERNAME }}"' \
+          -var 'build_password="${{ secrets.BUILD_PASSWORD }}"' \
+          -var 'build_key="${{ secrets.BUILD_KEY }}"' \
+          -var 'ansible_username="${{ secrets.ANSIBLE_USERNAME }}"' \
+          -var 'ansible_password="${{ secrets.ANSIBLE_PASSWORD }}"' \
+          -var 'ansible_key="${{ secrets.ANSIBLE_KEY }}"' \
             ${{ matrix.paths }}            
 
 
