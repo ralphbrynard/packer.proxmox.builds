@@ -48,7 +48,7 @@ jobs:
         run: packer init ${{ matrix.paths }}
       
       - name: Run `packer validate`
-        id: fmt
+        id: validate
         run: | 
           packer validate \
             -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
@@ -75,6 +75,9 @@ jobs:
             -var 'ansible_key=${{ secrets.ANSIBLE_KEY }}' \
             ${{ matrix.paths }}
       
+      - name: Displaying output of packer validate
+        run: |
+          echo "${{ steps.validate.outputs.stdout || steps.validate.outputs.stderr }}"
 
 
 
