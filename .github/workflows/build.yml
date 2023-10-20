@@ -81,7 +81,7 @@ jobs:
             -var 'build_version=${{ github.ref_name }}' \
             -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
             -var 'proxmox_username=${{ env.PROXMOX_USERNAME }}' \
-            -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
+            -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}' \
             -var 'proxmox_api_token_id=${{ env.PROXMOX_API_TOKEN_ID }}' \
             -var 'proxmox_node=${{ secrets.PROXMOX_NODE }}' \
             -var 'proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }}' \
