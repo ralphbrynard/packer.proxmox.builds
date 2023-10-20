@@ -51,6 +51,7 @@ jobs:
         id: validate
         run: | 
           packer validate \
+            -syntax-only \
             -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
             -var 'proxmox_username=${{ secrets.PROXMOX_USERNAME }}' \
             -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
