@@ -31,7 +31,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        paths: ${{ fromJson(needs.list-files.outputs.paths) }}
+        paths: ${{ fromJson(needs.list-files.outputs.paths) }}    
     
     steps:
       - name: Checkout
@@ -51,20 +51,14 @@ jobs:
         id: validate
         run: | 
           packer validate \
-            -syntax-only \
             -var 'proxmox_url=${{ secrets.PROXMOX_URL }}' \
             -var 'proxmox_username=${{ secrets.PROXMOX_USERNAME }}' \
             -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
             -var 'proxmox_api_token_id=${{ secrets.PROXMOX_API_TOKEN }}' \
             -var 'proxmox_node=${{ secrets.PROXMOX_NODE }}' \
             -var 'proxmox_resource_pool=${{ secrets.PROXMOX_RESOURCE_POOL }}' \
-            -var 'vm_mem_size=4096' \
-            -var 'vm_cpu_core_count=2' \
-            -var 'vm_cpu_count=2' \
-            -var 'vm_os=l26' \
             -var 'vm_nic_vlan=${{ secrets.VLAN_ID }}' \
             -var 'vm_scsi_controller=virtio-scsi-single' \
-            -var 'vm_storage_pool=local-lvm' \
             -var 'enable_cloud_init=true' \
             -var 'cloud_init_storage_pool=${{ secrets.CLOUD_INIT_STORAGE_POOL }}' \
             -var 'http_ip=${{ secrets.HTTP_IP }}' \
@@ -76,10 +70,6 @@ jobs:
             -var 'ansible_key=${{ secrets.ANSIBLE_KEY }}' \
             ${{ matrix.paths }}
       
-      - name: Displaying output of packer validate
-        run: |
-          echo "${{ steps.validate.outputs.stdout || steps.validate.outputs.stderr }}"
-
 
 
   

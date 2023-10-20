@@ -101,7 +101,7 @@ variable "vm_id" {
 variable "vm_mem_size" {
   type        = number
   description = "The amount of memory for the VM."
-  default     = 2048
+  default     = null
 }
 
 variable "vm_enable_ballooning" {
@@ -119,13 +119,13 @@ variable "vm_min_mem_size" {
 variable "vm_cpu_core_count" {
   type        = number
   description = "The number of CPU cores to assign to the VM."
-  default     = 1
+  default     = null
 }
 
 variable "vm_cpu_count" {
   type        = number
   description = "The number of vCPU's to assign to the VM."
-  default     = 1
+  default     = null
 }
 
 variable "vm_os" {
@@ -556,11 +556,11 @@ source "proxmox-iso" "linux-debian" {
   // Virtual Machine settings
   vm_name            = local.vm_name
   vm_id              = var.vm_id
-  memory             = var.vm_mem_size
+  memory             = !(var.vm_mem_size == null) ? var.vm_mem_size : 2048
   ballooning_minimum = var.vm_enable_ballooning ? var.vm_min_mem_size : 0
-  cores              = var.vm_cpu_core_count
-  sockets            = var.vm_cpu_count
-  os                 = var.vm_os
+  cores              = !(var.vm_cpu_core_count == null) ? var.vm_cpu_core_count : 2
+  sockets            = !(var.vm_cpu_count == null) ? var.vm_cpu_count : 2
+  os                 = "l26"
   bios               = var.vm_bios
   qemu_agent         = var.vm_enable_qemu_agent
   scsi_controller    = var.vm_scsi_controller
@@ -616,7 +616,7 @@ source "proxmox-iso" "linux-debian" {
   communicator         = "ssh"
   ssh_username         = var.build_username
   ssh_password         = var.build_password
-  ssh_private_key_file = data.sshkey.install.private_key_path
+  #ssh_private_key_file = data.sshkey.install.private_key_path
 
   // Template settings
   template_name        = var.common_create_template ? local.template_name : null
