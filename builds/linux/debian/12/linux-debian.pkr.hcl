@@ -36,7 +36,6 @@ variable "proxmox_api_token" {
   type        = string
   description = "The API token to use for the Proxmox user."
   default     = null
-  sensitive   = true
 }
 
 variable "proxmox_api_token_id" {
