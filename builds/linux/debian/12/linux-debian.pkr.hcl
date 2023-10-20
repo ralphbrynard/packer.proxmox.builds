@@ -488,8 +488,6 @@ data "sshkey" "install" {
   name = var.build_username
 }
 
-data "git-repository" "cwd" {}
-
 //  BLOCK: locals
 //  Defines the local variables.
 
@@ -506,7 +504,7 @@ locals {
   ]
   build_by          = "Built by: HashiCorp Packer ${packer.version}"
   build_date        = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_version     = try(data.git-repository.cwd.head, var.build_version)
+  build_version     = var.build_version
   build_description = "Version: ${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}"
 
   http_ip = var.http_ip == null ? "{{ .HTTPIP }}" : var.http_ip
