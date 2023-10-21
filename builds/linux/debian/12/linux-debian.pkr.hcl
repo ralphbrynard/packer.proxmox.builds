@@ -625,7 +625,7 @@ source "proxmox-iso" "linux-debian" {
   communicator = "ssh"
   ssh_username = var.build_username
   ssh_password = var.build_password
-  #ssh_private_key_file = data.sshkey.install.private_key_path
+  ssh_private_key_file = data.sshkey.install.private_key_path
 
   // Template settings
   template_name        = var.common_create_template ? local.template_name : null
