@@ -342,13 +342,13 @@ variable "http_content" {
 variable "http_port_max" {
   type        = number
   description = "The highest port value in a range of HTTP ports."
-  default     = 8099
+  default     = 8080
 }
 
 variable "http_port_min" {
   type        = number
   description = "The lowest port value in a range of HTTP ports."
-  default     = 8000
+  default     = 8080
 }
 
 variable "http_bind_address" {
