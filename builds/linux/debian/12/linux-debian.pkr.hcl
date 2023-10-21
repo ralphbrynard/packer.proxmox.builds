@@ -592,15 +592,15 @@ source "proxmox-iso" "linux-debian" {
   // Removable media settings
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
-  dynamic "additional_iso_files" {
-    for_each = var.common_data_source == "disk" ? [1] : [0]
-    content {
-      unmount          = var.common_data_source == "disk" ? true : null
-      iso_storage_pool = var.common_data_source == "disk" ? var.cloud_init_storage_pool : null
-      cd_content       = var.common_data_source == "disk" ? local.data_source_content : null
-      cd_label = var.common_data_source == "disk" ? "media" : null
-    }
-  }
+  //dynamic "additional_iso_files" {
+  //  for_each = var.common_data_source == "disk" ? [1] : [0]
+  //  content {
+  //    unmount          = var.common_data_source == "disk" ? true : null
+  //    iso_storage_pool = var.common_data_source == "disk" ? var.cloud_init_storage_pool : null
+  //    cd_content       = var.common_data_source == "disk" ? local.data_source_content : null
+  //    cd_label = var.common_data_source == "disk" ? "media" : null
+  //  }
+  //}
 
   // HTTP data
   http_content      = var.common_data_source == "http" ? local.data_source_content : null
