@@ -595,10 +595,10 @@ source "proxmox-iso" "linux-debian" {
   dynamic "additional_iso_files" {
     for_each = var.common_data_source == "disk" ? [1] : [0]
     content {
-      unmount          = true
-      iso_storage_pool = var.cloud_init_storage_pool
-      cd_content       = local.data_source_content
-      cd_label = "media"
+      unmount          = var.common_data_source == "disk" ? true : null
+      iso_storage_pool = var.common_data_source == "disk" ? var.cloud_init_storage_pool : null
+      cd_content       = var.common_data_source == "disk" ? local.data_source_content : null
+      cd_label = var.common_data_source == "disk" ? "media" : null
     }
   }
 
