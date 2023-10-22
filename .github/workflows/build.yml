@@ -66,8 +66,6 @@ jobs:
             -var 'enable_cloud_init=true' \
             -var 'cloud_init_storage_pool=${{ secrets.CLOUD_INIT_STORAGE_POOL }}' \
             -var 'http_ip=${{ secrets.HTTP_IP }}' \
-            -var 'http_port_max=8080' \
-            -var 'http_port_min=8080' \
             -var 'build_username=${{ secrets.BUILD_USERNAME }}' \
             -var 'build_password=${{ secrets.BUILD_PASSWORD }}' \
             -var 'build_key=${{ secrets.BUILD_KEY }}' \
