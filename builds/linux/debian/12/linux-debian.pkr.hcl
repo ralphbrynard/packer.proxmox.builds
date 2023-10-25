@@ -221,7 +221,7 @@ variable "vm_storage_pool" {
 variable "vm_disk_size" {
   type        = string
   description = "The size of the disk, including a unit suffix, such as 10G to indicate 10 gigabytes."
-  default     = "32G"
+  default     = null
 }
 
 variable "vm_cache_mode" {
@@ -469,10 +469,6 @@ packer {
       version = ">= 1.1.3"
       source  = "github.com/hashicorp/proxmox"
     }
-    git = {
-      version = ">= 0.4.3"
-      source  = "github.com/ethanmdavidson/git"
-    }
     sshkey = {
       version = ">= 1.0.1"
       source  = "github.com/ivoronin/sshkey"
@@ -581,7 +577,7 @@ source "proxmox-iso" "linux-debian" {
   disks {
     type         = var.vm_disk_type
     storage_pool = var.vm_storage_pool
-    disk_size    = var.vm_disk_size
+    disk_size    = !(var.vm_disk_size == null) ? var.vm_disk_size : "32G"
     cache_mode   = var.vm_cache_mode
     format       = var.vm_disk_format
     io_thread    = var.vm_enable_io_threading
@@ -592,15 +588,6 @@ source "proxmox-iso" "linux-debian" {
   // Removable media settings
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
-  //dynamic "additional_iso_files" {
-  //  for_each = var.common_data_source == "disk" ? [1] : [0]
-  //  content {
-  //    unmount          = var.common_data_source == "disk" ? true : null
-  //    iso_storage_pool = var.common_data_source == "disk" ? var.cloud_init_storage_pool : null
-  //    cd_content       = var.common_data_source == "disk" ? local.data_source_content : null
-  //    cd_label = var.common_data_source == "disk" ? "media" : null
-  //  }
-  //}
 
   // HTTP data
   http_content      = var.common_data_source == "http" ? local.data_source_content : null
@@ -688,7 +675,7 @@ build {
       build_version       = local.build_version
       vm_cpu_cores        = !(var.vm_cpu_core_count == null) ? var.vm_cpu_core_count : 2
       vmp_cpu_count       = !(var.vm_cpu_count == null) ? var.vm_cpu_count : 2
-      vm_disk_size        = var.vm_disk_size
+      vm_disk_size        = !(var.vm_disk_size == null) ? var.vm_disk_size : "32G"
       vm_guest_os_family  = local.vm_guest_os_family
       vm_guest_os_name    = local.vm_guest_os_name
       vm_guest_os_version = local.vm_guest_os_version
