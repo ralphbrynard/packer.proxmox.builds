@@ -35,7 +35,6 @@ jobs:
   packer-build:
     needs: list-files
     runs-on: self-hosted
-    continue-on-error: true
     strategy:
       fail-fast: true
       matrix:
