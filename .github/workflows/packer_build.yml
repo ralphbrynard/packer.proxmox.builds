@@ -21,9 +21,11 @@ env:
   ansible_password: ${{ secrets.ANSIBLE_PASSWORD }}  
   enable_cloud_init: true
   cloud_init_storage_pool: ${{ secrets.CLOUD_INIT_STORAGE_POOL }}
+  vm_inst_os_kms_key_pro: ${{ secrets.VM_INST_OS_KMS_KEY_PRO }}
+  vm_inst_os_kms_key_ent: ${{ secrets.VM_INST_OS_KMS_KEY_ENT }}  
 
 jobs:
-   win-files:
+   list-files:
       runs-on: self-hosted
       strategy:
          fail-fast: true
@@ -46,18 +48,19 @@ jobs:
    packer-win-build:
       needs: win-files
       runs-on: self-hosted
-      env:
-         vm_inst_os_kms_key_pro: ${{ secrets.VM_INST_OS_KMS_KEY_PRO }}
-         vm_inst_os_kms_key_ent: ${{ secrets.VM_INST_OS_KMS_KEY_ENT }}
-
       strategy:
          fail-fast: true
          matrix:
-           paths: ${{ fromJson(needs.win-files.outputs.paths) }}
+           paths: ${{ fromJson(needs.list-files.outputs.paths) }}
         
       steps:
          - name: Checkout
            uses: actions/checkout@v3
+         - name: Setup Packer
+           uses: hashicorp/setup-packer@main
+           id: setup
+           with:
+            version: ${{ env.PACKER_VERSION }}
          - name: Packer Init
            id: init
            run: packer init ${{ matrix.paths }}
