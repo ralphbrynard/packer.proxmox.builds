@@ -4,6 +4,7 @@ on:
   push:
 
 env:
+  BUILD: false
   PACKER_VERSION: "1.9.4"
   PROXMOX_USERNAME: "packer@pve"
   PROXMOX_API_TOKEN_ID: "packer_api_token"
@@ -16,6 +17,7 @@ jobs:
       matrix:
         build_path:
           - ./builds/linux/debian/12
+          - ./builds/windows/desktop/11
     outputs:
       paths: ${{ steps.list-files.outputs.paths }}
 
@@ -52,6 +54,7 @@ jobs:
       
       - name: Run `packer build`
         id: build
+        if: '${{ env.BUILD }} == true'
         run: | 
           packer build \
             -var 'build_version=${{ github.ref_name }}' \
