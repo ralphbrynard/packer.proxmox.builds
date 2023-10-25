@@ -631,6 +631,7 @@ source "proxmox-iso" "windows-desktop-ent" {
   iso_file    = local.vm_iso_file
   unmount_iso = var.vm_unmount_iso
   additional_iso_files {
+   unmount = true
     iso_storage_pool = local.iso_storage_pool
     cd_files    = ["${path.cwd}/scripts/${local.vm_guest_os_family}/", "${path.cwd}/drivers/"]
     cd_content = {
