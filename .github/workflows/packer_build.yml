@@ -28,7 +28,7 @@ jobs:
       strategy:
          fail-fast: true
          matrix:
-            build-paths:
+            build_path:
                - ./builds/windows/desktop/11
       outputs:
          paths: ${{ steps.win-files.outputs.paths }}
@@ -40,8 +40,9 @@ jobs:
           with:
             repo: ${{ github.repository }}
             ref: ${{ github.ref }}
-            path: ${{ matrix.build-paths }}
+            path: ${{ matrix.build_path }}
             ext: ".pkr.hcl"
+
    packer-win-build:
       needs: win-files
       runs-on: self-hosted
@@ -59,7 +60,7 @@ jobs:
            uses: actions/checkout@v3
          - name: Packer Init
            id: init
-           run: packer init ${{ matrix.build_paths }}
+           run: packer init ${{ matrix.paths }}
          - name: Packer Build
            id: build
            run: |
