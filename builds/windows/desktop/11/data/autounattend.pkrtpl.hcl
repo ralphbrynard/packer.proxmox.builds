@@ -14,7 +14,7 @@
         <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DriverPaths>
                 <PathAndCredentials wcm:action="add" wcm:keyValue="1">
-                    <Path>E:\pvscsi\${vm_os}\amd64</Path>
+                    <Path>E:\pvscsi\${vm_os}</Path>
                 </PathAndCredentials>
             </DriverPaths>
         </component>
@@ -189,8 +189,6 @@
                         <Group>administrators</Group>
                         <Name>${build_username}</Name>
                     </LocalAccount>
-                </LocalAccounts>
-                <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
                             <Value>${ansible_password}</Value>
@@ -200,8 +198,8 @@
                         <DisplayName>${ansible_username}</DisplayName>
                         <Group>administrators</Group>
                         <Name>${ansible_username}</Name>
-                    </LocalAccount>
-                </LocalAccounts>                
+                    </LocalAccount>                    
+                </LocalAccounts>              
             </UserAccounts>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>
