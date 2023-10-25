@@ -36,7 +36,7 @@ jobs:
       steps:
         - name: List Windows Build Files
           id: list-files
-          uses: mirko-felice/list-files-actionsv3.0.5
+          uses: mirko-felice/list-files-actionv3.0.5
           with:
             repo: ${{ github.repository }}
             ref: ${{ github.ref }}
