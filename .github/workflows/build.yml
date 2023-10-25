@@ -14,6 +14,7 @@ jobs:
   list-files:
     runs-on: self-hosted
     strategy:
+      fail-fast: true
       matrix:
         build_path:
           - ./builds/linux/debian/12
@@ -77,6 +78,8 @@ jobs:
             -var 'ansible_username=${{ secrets.ANSIBLE_USERNAME }}' \
             -var 'ansible_password=${{ secrets.ANSIBLE_PASSWORD }}' \
             -var 'ansible_key=${{ secrets.ANSIBLE_KEY }}' \
+            -var 'vm_inst_os_kms_key_pro=${{ secrets.VM_INST_OS_KMS_KEY_PRO }}' \
+            -var 'vm_inst_os_kms_key_ent=${{ secrets.VM_INST_OS_KMS_KEY_ENT }}' \
             ${{ matrix.paths }}            
 
 
