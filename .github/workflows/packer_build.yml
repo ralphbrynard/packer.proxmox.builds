@@ -31,7 +31,7 @@ jobs:
             build-paths:
                - ./builds/windows/desktop/11
       outputs:
-         win-paths: ${{ steps.win-files.outputs.paths }}
+         paths: ${{ steps.win-files.outputs.paths }}
       
       steps:
         - name: List Windows Build Files
@@ -52,7 +52,7 @@ jobs:
       strategy:
          fail-fast: true
          matrix:
-           build_paths: ${{ fromJson(needs.win-files.outputs.win-paths) }}
+           paths: ${{ fromJson(needs.win-files.outputs.paths) }}
         
       steps:
          - name: Checkout
