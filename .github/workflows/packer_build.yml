@@ -1,0 +1,84 @@
+name: Packer Build
+
+on:
+  push:
+
+env:
+  PACKER_VERSION: "1.9.4"
+  build_version: ${{ github.ref_name }}
+  proxmox_url: ${{ secrets. PROXMOX_URL }}
+  proxmox_username: ${{ secrets.PROXMOX_USERNAME }}
+  proxmox_api_token: ${{ secrets.PROXMOX_API_TOKEN }}
+  proxmox_api_token_id: ${{ secrets.PROXMOX_API_TOKEN_ID }}
+  proxmox_node: ${{ secrets.PROXMOX_NODE }}
+  proxmox_resource_pool: ${{ secrets.PROXMOX_RESOURCE_POOL }}
+  vm_nic_vlan: 13
+  vm_scsi_controller: virtio-scsi-single
+  http_ip: ${{ secrets.HTTP_IP }}
+  build_username: ${{ secrets.BUILD_USERNAME }}
+  build_password: ${{ secrets.BUILD_PASSWORD }}
+  ansible_username: ${{ secrets.ANSIBLE_USERNAME }}
+  ansible_password: ${{ secrets.ANSIBLE_PASSWORD }}  
+  enable_cloud_init: true
+  cloud_init_storage_pool: ${{ secrets.CLOUD_INIT_STORAGE_POOL }}
+
+jobs:
+   win-files:
+      runs-on: ubuntu-latest
+      strategy:
+         fail-fast: true
+         matrix:
+            build-paths:
+               - ./builds/windows/desktop/11
+      outputs:
+         win-paths: ${{ steps.win-files.outputs.paths }}
+      
+      steps:
+        - name: List Windows Build Files
+          id: list-files
+          uses: mirko-felice/list-files-actionsv3.0.5
+          with:
+            repo: ${{ github.repository }}
+            ref: ${{ github.ref }}
+            path: ${{ matrix.build-paths }}
+            ext: ".pkr.hcl"
+   packer-win-build:
+      needs: win-files
+      runs-on: self-hosted
+      env:
+         vm_inst_os_kms_key_pro: ${{ secrets.VM_INST_OS_KMS_KEY_PRO }}
+         vm_inst_os_kms_key_ent: ${{ secrets.VM_INST_OS_KMS_KEY_ENT }}
+
+      strategy:
+         fail-fast: true
+         matrix:
+           build_paths: ${{ fromJson(needs.win-files.outputs.win-paths) }}
+        
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+         - name: Packer Init
+           id: init
+           run: packer init ${{ matrix.build_paths }}
+         - name: Packer Build
+           id: build
+           run: |
+            packer build \
+               -var 'build_version=${{ env.build_version }}' \
+               -var 'proxmox_url=${{ env.proxmox_url }}' \
+               -var 'proxmox_username=${{ env.proxmox_username }}' \
+               -var 'proxmox_api_token=${{ env.proxmox_api_token }}' \
+               -var 'proxmox_api_token_id=${{ env.proxmox_api_token_id }}' \
+               -var 'proxmox_resource_pool=${{ env.proxmox_resource_pool }}' \
+               -var 'vm_nic_vlan=${{ env.vm_nic_vlan }}' \
+               -var 'vm_scsi_controller=${{ env.vm_scsi_controller }}' \
+               -var 'enable_cloud_init=${{ env.enable_cloud_init }}' \
+               -var 'cloud_init_storage_pool=${{ env.cloud_init_storage_pool }}' \
+               -var 'http_ip=${{ env.http_ip }}' \
+               -var 'build_username=${{ env.build_username }}' \
+               -var 'build_password=${{ env.build_password }}' \
+               -var 'ansible_username=${{ env.ansible_username }}' \
+               -var 'ansible_password=${{ env.ansible_password }}' \
+               -var 'vm_inst_os_kms_key_pro=${{ env.vm_inst_os_kms_key_pro }}' \
+               -var 'vm_inst_os_kms_key_ent=${{ env.vm_inst_os_kms_key_ent }}' \
+               ${{ matrix.paths }}
