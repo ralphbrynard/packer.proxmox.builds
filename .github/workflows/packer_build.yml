@@ -33,7 +33,7 @@ jobs:
             build_path:
                - ./builds/windows/desktop/11
       outputs:
-         paths: ${{ steps.win-files.outputs.paths }}
+         paths: ${{ steps.list-files.outputs.paths }}
       
       steps:
         - name: List Windows Build Files
@@ -43,7 +43,7 @@ jobs:
             repo: ${{ github.repository }}
             ref: ${{ github.ref }}
             path: ${{ matrix.build_path }}
-            ext: ".pkr.hcl"
+            ext: .pkr.hcl
 
    packer-win-build:
       needs: list-files
