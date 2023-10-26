@@ -4,8 +4,7 @@ on:
   # trunk-ignore(yamllint/empty-values)
   push:
 
-permissions:
-   actions: read-all
+permissions: read-all
 
 env:
   PACKER_VERSION: 1.9.4
