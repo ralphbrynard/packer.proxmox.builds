@@ -46,7 +46,7 @@ jobs:
             ext: ".pkr.hcl"
 
    packer-win-build:
-      needs: win-files
+      needs: list-files
       runs-on: self-hosted
       strategy:
          fail-fast: true
@@ -54,6 +54,9 @@ jobs:
            paths: ${{ fromJson(needs.list-files.outputs.paths) }}
         
       steps:
+         - name: Debug Output
+           run: |
+            echo ${{ needs.list-files.outputs.paths }}
          - name: Checkout
            uses: actions/checkout@v3
          - name: Setup Packer
