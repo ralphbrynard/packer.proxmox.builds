@@ -71,9 +71,9 @@ jobs:
                -var 'build_version=${{ env.build_version }}' \
                -var 'proxmox_url=${{ env.proxmox_url }}' \
                -var 'proxmox_node=${{ env.proxmox_node }}' \
-               -var 'proxmox_username=${{ env.proxmox_username }}' \
-               -var 'proxmox_api_token=${{ env.proxmox_api_token }}' \
-               -var 'proxmox_api_token_id=${{ env.proxmox_api_token_id }}' \
+               -var 'proxmox_username=${{ secrets.PROXMOX_USERNAME }}' \
+               -var 'proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}' \
+               -var 'proxmox_api_token_id=${{ secrets.PROXMOX_API_TOKEN_ID }}' \
                -var 'proxmox_resource_pool=${{ env.proxmox_resource_pool }}' \
                -var 'vm_nic_vlan=${{ env.vm_nic_vlan }}' \
                -var 'vm_scsi_controller=${{ env.vm_scsi_controller }}' \
