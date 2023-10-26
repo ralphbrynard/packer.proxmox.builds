@@ -107,7 +107,7 @@ variable "vm_guest_os_language" {
 variable "vm_guest_os_keyboard" {
   type        = string
   description = "The keyboard layout to use for the VM."
-  default     = "us"
+  default     = "en_US"
 }
 
 variable "vm_guest_os_timezone" {
