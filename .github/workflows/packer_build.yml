@@ -54,9 +54,6 @@ jobs:
            paths: ${{ fromJson(needs.list-files.outputs.paths) }}
         
       steps:
-         - name: Debug Output
-           run: |
-            echo ${{ needs.list-files.outputs.paths }}
          - name: Checkout
            uses: actions/checkout@v3
          - name: Setup Packer
@@ -73,6 +70,7 @@ jobs:
             packer build \
                -var 'build_version=${{ env.build_version }}' \
                -var 'proxmox_url=${{ env.proxmox_url }}' \
+               -var 'proxmox_node=${{ env.proxmox_node }}' \
                -var 'proxmox_username=${{ env.proxmox_username }}' \
                -var 'proxmox_api_token=${{ env.proxmox_api_token }}' \
                -var 'proxmox_api_token_id=${{ env.proxmox_api_token_id }}' \
