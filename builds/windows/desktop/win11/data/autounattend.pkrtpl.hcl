@@ -14,7 +14,7 @@
         <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DriverPaths>
                 <PathAndCredentials wcm:action="add" wcm:keyValue="1">
-                    <Path>E:\pvscsi\${vm_os}</Path>
+                    <Path>E:\pvscsi</Path>
                 </PathAndCredentials>
             </DriverPaths>
         </component>
@@ -164,14 +164,14 @@
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Description>Initial Configuration</Description>
-                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File E:\windows-init.ps1</CommandLine>
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File E:\windows\windows-init.ps1</CommandLine>
                     <Order>3</Order>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Description>Install Virtio Drivers and Qemu Guest Agent</Description>
-                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File E:\windows-guest-agent.ps1 ${vm_os}</CommandLine>
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File E:\windows\windows-guest-agent.ps1</CommandLine>
                     <Order>4</Order>
-                </SynchronousCommand>             
+                </SynchronousCommand>                               
             </FirstLogonCommands>
             <UserAccounts>
                 <AdministratorPassword>

@@ -1,5 +1,5 @@
 param(
-    [string] $OSVERSION=$OSVERSION
+    [string] $OSVERSION=$env:OSVERSION
 )
 
 $uri="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.240-1/virtio-win.iso"
@@ -15,14 +15,12 @@ Mount-DiskImage "$file"
 Set-Location F:
 
 Write-Host "Installing Drivers..."
-$Drivers = Get-ChildItem "F:\vioserial\$OSVERSION" -Recurse -Filter "*.inf"
-foreach ($Driver in $Drivers){
-    try {
-        pnputil.exe /add-driver $Driver.FullName /install
-    }catch{
-        pnputil.exe /delete-driver $Driver.FullName /uninstall /force
-        pnputil.exe /add-driver $Driver.FullName /install
-    }
+if ($arch -eq "AMD64"){
+   $packageName="virtio-win-gt-x64.msi"
+   Start-Process msiexec "/i F:\$packageName /qr /norestart" -Wait
+}else{
+   $packageName="virtio-win-gt-x64.msi"
+   Start-Process msiexec "/i F:\$packageName /qr /norestart" -Wait
 }
 
 Write-Host "Installing Qemu Guest Agent..."
