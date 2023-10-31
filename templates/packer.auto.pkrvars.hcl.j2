@@ -1,0 +1,19 @@
+/*
+   DESCRIPTION:
+   Generated auto.pkrvars file for GitHub Actions builds.
+*/
+
+// Build metadata
+build_version = "{{ build_version }}"
+
+{%- if os_type == "win" -%}
+// Installation Operating System metadata
+vm_inst_os_kms_key_pro = "{{ vm_inst_os_kms_key_pro }}"
+vm_inst_os_kms_key_ent = "{{ vm_inst_os_kms_key_ent }}"
+
+// Virtual Machine Variables
+vm_mem_size = 4096
+vm_cpu_core_count = 2
+vm_cpu_count = 2
+vm_os = "{{ vm_os }}"
+{%- endif -%}

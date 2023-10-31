@@ -10,13 +10,11 @@ variable "build_version" {
 variable "proxmox_url" {
   type        = string
   description = "The URL to the Proxmox API endpoint."
-  default     = null
 }
 
 variable "proxmox_username" {
   type        = string
   description = "The username to login to the Proxmox datacenter"
-  default     = null
 }
 
 variable "proxmox_password" {
@@ -48,7 +46,6 @@ variable "proxmox_insecure_connection" {
 variable "proxmox_node" {
   type        = string
   description = "Which node in the Proxmox datacenter to run the build on."
-  default     = null
 }
 
 variable "proxmox_resource_pool" {
@@ -98,16 +95,34 @@ variable "vm_name" {
   default     = null
 }
 
+variable "vm_guest_os_family" {
+  type        = string
+  description = "The OS family of the virtual machine."
+  default     = "Windows"
+}
+
+variable "vm_guest_os_name" {
+  type        = string
+  description = "The OS name of the virtual machine."
+  default     = "desktop"
+}
+
+variable "vm_guest_os_version" {
+  type        = string
+  description = "The OS version of the virtual machine."
+  default     = "11"
+}
+
 variable "vm_guest_os_language" {
   type        = string
   description = "The language to be used for the operating system."
-  default     = "en_US"
+  default     = "en-US"
 }
 
 variable "vm_guest_os_keyboard" {
   type        = string
   description = "The keyboard layout to use for the VM."
-  default     = "en_US"
+  default     = "en-US"
 }
 
 variable "vm_guest_os_timezone" {
@@ -137,7 +152,7 @@ variable "vm_id" {
 variable "vm_mem_size" {
   type        = number
   description = "The amount of memory for the VM."
-  default     = null
+  default     = 2048
 }
 
 variable "vm_enable_ballooning" {
@@ -155,21 +170,21 @@ variable "vm_min_mem_size" {
 variable "vm_cpu_core_count" {
   type        = number
   description = "The number of CPU cores to assign to the VM."
-  default     = null
+  default     = 2
 }
 
 variable "vm_cpu_count" {
   type        = number
   description = "The number of vCPU's to assign to the VM."
-  default     = null
+  default     = 2
 }
 
 variable "vm_os" {
   type        = string
-  description = "The VM operating system. Can be; `wxp`. `w2k`, `w2k3`, `w2k8`, `wvista`, `win7`, `win8`, `win10`, `l24`, `l26`, `solaris`, or `other`."
-  default     = "l26"
+  description = "The VM operating system. Can be; `wxp`. `w2k`, `w2k3`, `w2k8`, `wvista`, `win7`, `win8`, `win10`, `win11`, `l24`, `l26`, `solaris`, or `other`."
+  default     = "win11"
   validation {
-    condition     = contains(["wxp", "w2k", "w2k3", "w2k8", "wvista", "win7", "win8", "win10","win11" ,"l24", "l26", "solaris", "other"], var.vm_os)
+    condition     = contains(["wxp", "w2k", "w2k3", "w2k8", "wvista", "win7", "win8", "win10", "win11", "l24", "l26", "solaris", "other"], var.vm_os)
     error_message = "Invalid value provided. Must be one of: `wxp`. `w2k`, `w2k3`, `w2k8`, `wvista`, `win7`, `win8`, `win10`, `l24`, `l26`, `solaris`, or `other`."
   }
 }
@@ -249,7 +264,6 @@ variable "vm_disk_type" {
 variable "vm_storage_pool" {
   type        = string
   description = " Required. Name of the Proxmox storage pool to store the virtual machine disk on. A local-lvm pool is allocated by the installer, for example."
-  default     = "local-lvm"
 }
 
 variable "vm_disk_size" {
@@ -305,7 +319,7 @@ variable "vm_enable_qemu_agent" {
 variable "vm_scsi_controller" {
   type        = string
   description = "The SCSI controller model to emulate. Can be `lsi`, `lsi53c810`, `virtio-scsi-pci`, `virtio-scsi-single`, `megasas`, or `pvscsi`. Defaults to lsi."
-  default     = "lsi"
+  default     = "virtio-scsi-single"
   validation {
     condition     = contains(["lsi", "lsi53c810", "virtio-scsi-pci", "virtio-scsi-single", "megasas", "pvscsi"], var.vm_scsi_controller)
     error_message = "Invalid value provided. Must be one of: `lsi`, `lsi53c810`, `virtio-scsi-pci`, `virtio-scsi-single`, `megasas`, or `pvscsi`."
@@ -330,6 +344,18 @@ variable "vm_iso_file" {
   default     = null
 }
 
+variable "vm_iso_url" {
+  type        = string
+  description = "A URL to the ISO containing the installation image or virtual hard drive (VHD or VHDX) file to clone."
+  default     = null
+}
+
+variable "vm_iso_checksum" {
+  type        = string
+  description = "The checksum for the ISO file or virtual hard drive file. The type of the checksum is specified within the checksum field as a prefix, ex: `md5:{$checksum}`. The type of the checksum can also be omitted and Packer will try to infer it based on string length. Valid values are `none`, `{$checksum}`, `md5:{$checksum}`, `sha1:{$checksum}`, `sha256:{$checksum}`, `sha512:{$checksum}` or `file:{$path}`."
+  default     = null
+}
+
 variable "vm_interface" {
   type        = string
   description = " Name of the network interface that Packer gets the VMs IP from. Defaults to the first non loopback interface."
@@ -338,8 +364,8 @@ variable "vm_interface" {
 
 variable "vm_unmount_iso" {
   type        = bool
-  description = "If true, remove the mounted ISO from the template after finishing. Defaults to false."
-  default     = false
+  description = "If true, remove the mounted ISO from the template after finishing. Defaults to `true`."
+  default     = true
 }
 
 variable "vm_efi_type" {
@@ -374,13 +400,13 @@ variable "cd_content" {
 variable "cd_label" {
   type        = string
   description = "Label to attach to the attched CD's"
-  default     = "cidata"
+  default     = null
 }
 
 variable "iso_storage_pool" {
   type        = string
   description = "The storage pool to upload the attached iso file to."
-  default     = "local"
+  default     = null
 }
 // HTTP data
 variable "http_content" {
@@ -443,13 +469,11 @@ variable "boot_wait" {
 variable "build_username" {
   type        = string
   description = "The username to use for the build."
-  default     = "packer"
 }
 
 variable "build_password" {
   type        = string
   description = "The password to use for the build."
-  default     = "packer"
   sensitive   = true
 }
 
@@ -463,13 +487,11 @@ variable "build_key" {
 variable "ansible_username" {
   type        = string
   description = "The Ansible provisioner username."
-  default     = "ansible"
 }
 
 variable "ansible_password" {
   type        = string
   description = "The Ansible provisioner password."
-  default     = "ansible"
   sensitive   = true
 }
 
@@ -481,6 +503,15 @@ variable "ansible_key" {
 }
 
 // Communicator Credentials
+variable "communicator_type" {
+  type        = string
+  description = "The communicator type to use for Packer provisioning. Allowed values are `winrm`, or `ssh`."
+  default     = "winrm"
+  validation {
+    condition     = contains(["ssh", "winrm"], var.communicator_type)
+    error_message = "Invalid value provided. Allowed values are either: `ssh` or `winrm`."
+  }
+}
 
 variable "communicator_port" {
   type        = number
@@ -492,6 +523,36 @@ variable "communicator_timeout" {
   type        = string
   description = "The timeout for the communicator protocol."
   default     = "12h"
+}
+
+variable "communicator_host" {
+  type        = string
+  description = "The address for WinRM to connect to."
+  default     = null
+}
+
+variable "communicator_proxy" {
+  type        = bool
+  description = "Setting this to `true` adds the remote host:port to the NO_PROXY environment variable. This has the effect of bypassing any configured proxies when connecting to the remote host. Default to `false`."
+  default     = false
+}
+
+variable "communicator_use_ssl" {
+  type        = bool
+  description = "If `true`, use HTTPS for WinRM."
+  default     = false
+}
+
+variable "communicator_insecure" {
+  type        = bool
+  description = "If `true`, do not check server certificate chain and host name."
+  default     = false
+}
+
+variable "communicator_use_ntlm_auth" {
+  type        = bool
+  description = " If `true`, NTLMv2 authentication (with session security) will be used for WinRM, rather than default (basic authentication), removing the requirement for basic authentication to be enabled within the target guest."
+  default     = false
 }
 
 // Provisioner Settings
@@ -518,7 +579,7 @@ variable "common_create_template" {
 variable "common_data_source" {
   type        = string
   description = "The provisioning data source. Can be either `http`, or `disk`."
-  default     = "http"
+  default     = "disk"
 }
 
 /*
@@ -535,6 +596,10 @@ packer {
       source  = "github.com/hashicorp/ansible"
       version = "~> 1"
     }
+    proxmox = {
+      version = ">= 1.1.3"
+      source  = "github.com/hashicorp/proxmox"
+    }
     windows-update = {
       source  = "github.com/rgl/windows-update"
       version = ">= 0.14.3"
@@ -549,13 +614,12 @@ locals {
   build_by          = "Built by: HashiCorp Packer ${packer.version}"
   build_date        = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_version     = var.build_version
-  build_description = "Version: ${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}"
+  build_description = !(var.build_version == null) ? "Version: ${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}" : "Build on: ${local.build_date}\n${local.build_by}"
 
   http_ip = var.http_ip == null ? "{{ .HTTPIP }}" : var.http_ip
 
-  iso_file        = "en-us_windows_11_business_editions_version_22h2_updated_oct_2023_x64_dvd_e6b6f11c.iso"
-  iso_storage_pool = "cidata"
-  vm_os = "w11"
+  iso_file = "en-us_windows_11_business_editions_version_22h2_updated_oct_2023_x64_dvd_e6b6f11c.iso"
+  vm_os    = "w11"
 
   manifest_date   = formatdate("YYYY-MM-DD hh:mm:ss", timestamp())
   manifest_path   = "${path.cwd}/manifests/"
@@ -570,7 +634,7 @@ locals {
   vm_guest_os_edition_pro = "pro"
   vm_name                 = "${local.vm_guest_os_family}.${local.vm_guest_os_name}${local.vm_guest_os_version}"
   vm_iso_file             = var.vm_iso_file == null ? join("/", ["local:iso", local.iso_file]) : null
-  data_source_content = null
+  data_source_content     = null
 
   template_name        = local.vm_name
   template_description = local.build_description
@@ -592,7 +656,7 @@ source "proxmox-iso" "windows-desktop-ent" {
   task_timeout = var.proxmox_task_timeout
 
   // Virtual Machine settings
-  vm_name            = "${local.vm_name}ent"
+  vm_name            = "${var.vm_guest_os_name}-${var.vm_guest_os_edition_ent}.${var.vm_guest_os_family}${var.vm_guest_os_version}"
   vm_id              = var.vm_id
   memory             = !(var.vm_mem_size == null) ? var.vm_mem_size : 4096
   ballooning_minimum = var.vm_enable_ballooning ? var.vm_min_mem_size : 0
@@ -628,12 +692,14 @@ source "proxmox-iso" "windows-desktop-ent" {
   }
 
   // Removable media settings
-  iso_file    = local.vm_iso_file
-  unmount_iso = var.vm_unmount_iso
+  iso_file     = !(var.vm_iso_url == null) ? var.vm_iso_file : null
+  iso_url      = !(var.vm_iso_file == null) ? var.vm_iso_url : null
+  iso_checksum = !(var.vm_iso_url == null) ? var.vm_iso_checksum : null
+  unmount_iso  = var.vm_unmount_iso
   additional_iso_files {
-   unmount = true
-    iso_storage_pool = local.iso_storage_pool
-    cd_files    = ["${path.cwd}/scripts/${local.vm_guest_os_family}/", "${path.cwd}/drivers/"]
+    unmount          = true
+    iso_storage_pool = var.iso_storage_pool
+    cd_files         = ["${path.cwd}/scripts/${local.vm_guest_os_family}/", "${path.cwd}/drivers/"]
     cd_content = {
       "autounattend.xml" = templatefile("${abspath(path.root)}/data/autounattend.pkrtpl.hcl", {
         build_username       = var.build_username
@@ -654,10 +720,14 @@ source "proxmox-iso" "windows-desktop-ent" {
 
   // HTTP data
   http_content      = var.common_data_source == "http" ? local.data_source_content : null
-  http_port_max     = var.http_port_max
-  http_port_min     = var.http_port_min
-  http_bind_address = var.http_bind_address
-  http_interface    = var.http_interface
+  http_port_max     = var.common_data_source == "http" ? var.http_port_max : null
+  http_port_min     = var.common_data_source == "http" ? var.http_port_min : null
+  http_bind_address = var.common_data_source == "http" ? var.http_bind_address : null
+  http_interface    = var.common_data_source == "http" ? var.http_interface : null
+
+  // Cloud init settings
+  cloud_init              = var.enable_cloud_init
+  cloud_init_storage_pool = var.enable_cloud_init ? var.cloud_init_storage_pool : null
 
   // Boot settings
   boot_wait    = var.boot_wait
@@ -668,6 +738,13 @@ source "proxmox-iso" "windows-desktop-ent" {
   winrm_username = var.build_username
   winrm_password = var.build_password
   winrm_port     = var.communicator_port
+  winrm_host     = var.communicator_host
+  winrm_no_proxy = var.communicator_proxy
+  winrm_timeout  = var.communicator_timeout
+  winrm_use_ssl  = var.communicator_use_ssl
+  winrm_insecure = var.communicator_insecure
+  winrm_use_ntlm = var.communicator_use_ntlm_auth
+
 
   // Template settings
   template_name        = var.common_create_template ? local.template_name : null
@@ -729,7 +806,7 @@ source "proxmox-iso" "windows-desktop-pro" {
   unmount_iso = var.vm_unmount_iso
   additional_iso_files {
     iso_storage_pool = local.iso_storage_pool
-    cd_files    = ["${path.cwd}/scripts/${local.vm_guest_os_family}/", "${path.cwd}/drivers/"]
+    cd_files         = ["${path.cwd}/scripts/${local.vm_guest_os_family}/", "${path.cwd}/drivers/"]
     cd_content = {
       "autounattend.xml" = templatefile("${abspath(path.root)}/data/autounattend.pkrtpl.hcl", {
         build_username       = var.build_username

@@ -16,7 +16,7 @@ variable "build_version" {
 variable "proxmox_url" {
   type        = string
   description = "The URL to the Proxmox API endpoint."
-  default     = null
+
 }
 
 variable "proxmox_username" {
@@ -609,9 +609,9 @@ source "proxmox-iso" "linux-debian" {
   ]
 
   // Communicator settings and credentials
-  communicator = "ssh"
-  ssh_username = var.build_username
-  ssh_password = var.build_password
+  communicator         = "ssh"
+  ssh_username         = var.build_username
+  ssh_password         = var.build_password
   ssh_private_key_file = data.sshkey.install.private_key_path
 
   // Template settings

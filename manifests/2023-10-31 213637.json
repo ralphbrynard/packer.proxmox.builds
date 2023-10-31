@@ -1,0 +1,45 @@
+{
+  "builds": [
+    {
+      "name": "windows-desktop-ent",
+      "builder_type": "proxmox-iso",
+      "files": null,
+      "artifact_id": "103",
+      "packer_run_uuid": "f86a934e-537d-0c7e-35fb-4a918282b6be",
+      "custom_data": {
+        "ansible_username": "ansible",
+        "build_username": "packer",
+        "build_version": "v0.0.1-rc",
+        "proxmox_node": "hades",
+        "proxmox_url": "https://10.1.0.148:8006/api2/json",
+        "vm_cpu_cores": "2",
+        "vm_disk_size": "64G",
+        "vm_guest_os_family": "windows",
+        "vm_mem_size": "4096",
+        "vm_nic_model": "e1000",
+        "vmp_cpu_count": "2"
+      }
+    },
+    {
+      "name": "windows-desktop-pro",
+      "builder_type": "proxmox-iso",
+      "files": null,
+      "artifact_id": "102",
+      "packer_run_uuid": "f86a934e-537d-0c7e-35fb-4a918282b6be",
+      "custom_data": {
+        "ansible_username": "ansible",
+        "build_username": "packer",
+        "build_version": "v0.0.1-rc",
+        "proxmox_node": "hades",
+        "proxmox_url": "https://10.1.0.148:8006/api2/json",
+        "vm_cpu_cores": "2",
+        "vm_disk_size": "64G",
+        "vm_guest_os_family": "windows",
+        "vm_mem_size": "4096",
+        "vm_nic_model": "e1000",
+        "vmp_cpu_count": "2"
+      }
+    }
+  ],
+  "last_run_uuid": "f86a934e-537d-0c7e-35fb-4a918282b6be"
+}
