@@ -15,97 +15,77 @@ proxmox_api_token = "12a3cdef-45g6-78h9-ijk0l1m"
 proxmox_insecure_connection = true
 
 // Virtual Machine Settings
-vm_name = "windows11"
-vm_id = 200
-vm_mem_size = 4096
-enable_kvm_ballooning = false
-vm_cpu_core_count = 2
-vm_cpu_count = 2
-vm_cpu_type = "kvm64"
-enable_numa_support = false
-vm_os = "win11"
-vm_firmware = "seabios"
-enable_qemu_agent = true
-vm_scsi_controller = "virtio-scsi-single"
-enable_start_on_boot = true
+vm_name                        = "w11"
+vm_id                          = null
+vm_mem_size                    = 4096
+enable_kvm_ballooning          = false
+vm_cpu_core_count              = 2
+vm_cpu_count                   = 2
+vm_cpu_type                    = null
+enable_numa_support            = false
+vm_os                          = "win11"
+vm_firmware                    = "seabios"
+enable_qemu_agent              = true
+vm_scsi_controller             = "virtio-scsi-single"
+enable_start_on_boot           = true
 enable_hardware_virtualization = false
-vm_packer_interface = null
-vm_guest_os_language = "en-US"
-vm_guest_os_keyboard = "en-US"
-vm_inst_os_image_ent = "Windows 11 Enterprise"
-vm_inst_os_image_pro = "Windows 11 Pro"
-vm_inst_os_kms_key_ent = "KMS KEY"
-vm_inst_os_kms_key_pro = "KMS KEY"
-vm_guest_os_timezone = "UTC"
+vm_packer_interface            = null
+vm_guest_os_family             = "windows"
+vm_guest_os_language           = "en-US"
+vm_guest_os_keyboard           = "en-US"
+vm_inst_os_image_ent           = "Windows 11 Enterprise"
+vm_inst_os_image_pro           = "Windows 11 Pro"
+vm_inst_os_kms_key_ent         = ""
+vm_inst_os_kms_key_pro         = ""
+vm_guest_os_timezone           = "UTC"
+vm_disk_storage_pool           = "local-lvm"
+enable_efi_config              = false
+vm_nic_model                   = "e1000"
+vm_nic_vlan_tag                = "13"
 
-vm_disk_config = {
-   disk1 = {
-      disk_type = "scsi"
-      disk_storage_pool = "local-lvm"
-      disk_size = "64G"
-      disk_cache_mode = "none"
-      disk_format = "raw"
-      disk_enable_io_threading = false
-      disk_enable_trimming = false
-      disk_enable_ssd = false
-   }
-}
+// Provisioner Settings
+scripts = ["scripts/windows/windows-prepare.ps1"]
+inline                         = ["Get-EventLog -LogName * | ForEach { Clear-EventLog -LogName $_.Log }"]
 
-enable_efi_config = true
-vm_efi_config = {
-   efi = {
-      efi_storage_pool = "efipool"
-      efi_pre_enrolled_keys = true
-      efi_type = "4m"
-   }
-}
-
-vm_network_config = {
-   nic1 = {
-      nic_model = "e1000"
-      nic_enable_packet_queues = false
-      nic_mac_address = null
-      nic_mtu = 0
-      nic_vlan_tag = null
-      nic_enable_proxmox_firewall = false
-   }
-}
 
 // Removeable Media Settings
-download_iso = false
-
-unmount_iso = true
-mount_additional_iso = true
-additional_iso_file = "local:iso/iso-file.iso"
-additional_iso_url = "https://iso-url.com/path/to/file.iso"
-additional_iso_urls = ["https://iso-url.com/path/to/file.iso", "https://iso-url.com/path/to/file.iso"]
-additional_iso_target_path =
-additional_iso_target_extension =
-additional_iso_checksum =
-additional_iso_storage_pool =
-additional_iso_device =
+download_iso                    = false
+iso_url                         = null
+iso_urls                        = null
+iso_file                        = "local:iso/en-us_windows_11_business_editions_version_22h2_updated_oct_2023_x64_dvd_e6b6f11c.iso"
+iso_checksum                    = null
+unmount_iso                     = true
+mount_additional_iso            = true
+additional_iso_file             = null
+additional_iso_url              = null
+additional_iso_urls             = null
+additional_iso_target_path      = null
+additional_iso_target_extension = null
+additional_iso_checksum         = null
+additional_iso_storage_pool     = "packer_iso"
+additional_iso_device           = null
 
 // Cloud Init
-enable_cloud_init =
-cloud_init_storage_pool =
+enable_cloud_init       = true
+cloud_init_storage_pool = "cidata"
 
 // Boot Settings
-vm_boot_wait =
+vm_boot_wait = "3s"
 
 // Communicator Settings
-communicator_winrm_port =
-communicator_use_proxy =
-communicator_host =
-communicator_timeout =
-communicator_winrm_use_ssl =
-communicator_winrm_insecure =
-communicator_winrm_use_ntlm =
+communicator_winrm_port     = 5985
+communicator_use_proxy      = false
+communicator_host           = null
+communicator_timeout        = "12h"
+communicator_winrm_use_ssl  = false
+communicator_winrm_insecure = true
+communicator_winrm_use_ntlm = false
 
 // Template Settings
-create_template = 
+create_template = true
 
 // Build Settings
-build_username =
-build_password =
-ansible_username =
-ansible_password =
+build_username   = "packer"
+build_password   = "packerTest!"
+ansible_username = "ansible"
+ansible_password = "ansibleTest!"

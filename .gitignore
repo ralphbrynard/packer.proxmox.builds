@@ -6,3 +6,5 @@ id_ecdsa_*.pub
 **/.config
 **packer_cache
 
+# Packer auto vars
+**/*.auto.pkrvars.hcl
