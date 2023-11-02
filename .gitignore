@@ -8,3 +8,7 @@ id_ecdsa_*.pub
 
 # Packer auto vars
 **/*.auto.pkrvars.hcl
+
+# Manifest files
+**/manifests/*
+act.secrets
