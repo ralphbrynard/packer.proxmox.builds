@@ -372,7 +372,7 @@ variable "vm_disk_enable_io_threading" {
   type        = bool
   description = <<EOF
    [Optional] Create one I/O thread per storage controller, rather than a single thread for all I/O. This can increase performance when multiple disks are used. Requires virtio-scsi-single controller and a scsi or virtio disk. Defaults to false.
-   EOF   
+   EOF
   default     = false
 }
 
@@ -408,7 +408,7 @@ variable "vm_storage_pool" {
   default     = null
 }
 
-variable "enable_kvm_ballooning" {
+variable "enable_dynamic_mem" {
   type        = bool
   description = <<EOF
    [Optional] If memory ballooning should be enabled in the VM.
@@ -525,7 +525,7 @@ variable "vm_inst_os_image_ent" {
   description = <<EOF
    [Optional] The guest operating system edition. Used for naming.
    EOF
-  default     = null
+  default     = "Windows 11 Enterprise"
 }
 
 variable "vm_inst_os_image_pro" {
@@ -533,7 +533,7 @@ variable "vm_inst_os_image_pro" {
   description = <<EOF
    [Optional] The guest operating system edition. Used for naming.
    EOF
-  default     = null
+  default     = "Windows 11 Pro"
 }
 
 variable "enable_numa_support" {
@@ -648,7 +648,7 @@ variable "additional_iso_url" {
 variable "additional_iso_urls" {
   type        = list(string)
   description = <<EOF
-   [Optional] Multiple URLs for the ISO to download. Packer will try these in order. If anything goes wrong attempting to download or while downloading a single URL, it will move on to the next. All URLs must point to the same file (same checksum). By default this is empty and `iso_url` is used. Only one of `iso_url` or `iso_urls` can be specified.   
+   [Optional] Multiple URLs for the ISO to download. Packer will try these in order. If anything goes wrong attempting to download or while downloading a single URL, it will move on to the next. All URLs must point to the same file (same checksum). By default this is empty and `iso_url` is used. Only one of `iso_url` or `iso_urls` can be specified.
    EOF
   default     = []
 }
@@ -780,7 +780,7 @@ source "proxmox-iso" "windows-desktop-ent" {
   vm_name            = "windows11.ent"
   vm_id              = var.vm_id
   memory             = var.vm_mem_size
-  ballooning_minimum = var.enable_kvm_ballooning ? var.vm_min_mem_size : null
+  ballooning_minimum = var.enable_dynamic_mem ? var.vm_min_mem_size : null
   cores              = var.vm_cpu_core_count
   sockets            = var.vm_cpu_count
   cpu_type           = var.vm_cpu_type
@@ -898,7 +898,7 @@ source "proxmox-iso" "windows-desktop-pro" {
   vm_name            = "windows11.pro"
   vm_id              = var.vm_id
   memory             = var.vm_mem_size
-  ballooning_minimum = var.enable_kvm_ballooning ? var.vm_min_mem_size : null
+  ballooning_minimum = var.enable_dynamic_mem ? var.vm_min_mem_size : null
   cores              = var.vm_cpu_core_count
   sockets            = var.vm_cpu_count
   cpu_type           = var.vm_cpu_type
