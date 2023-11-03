@@ -36,6 +36,8 @@ jobs:
     needs: win-11-files
     env:
       build: win11
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
     strategy:
       fail-fast: true
       matrix:
@@ -43,12 +45,13 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@v3
-      - name: git-secret
+      - name: git secret
+        id: git-secret
         run: |
-          sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list" \
-          wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | sudo apt-key add - \
-          sudo apt-get update && sudo apt-get install -y git-secret \
-          git secret --version
+          echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
+          gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
+          git secret reveal -p "$GPG_PASSWORD"
+          ls -la ${{ matrix.build }}
       - id: setup
         uses: hashicorp/setup-packer@main
         with:
