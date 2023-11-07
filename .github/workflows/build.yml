@@ -52,10 +52,3 @@ jobs:
           gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
           git secret reveal -p "$GPG_PASSWORD"
           ls -la ${{ matrix.build }}
-      - id: setup
-        uses: hashicorp/setup-packer@main
-        with:
-          version: ${{ env.packer_version }}
-      - id: init
-        run: |
-          packer init ${{ matrix.build }}
