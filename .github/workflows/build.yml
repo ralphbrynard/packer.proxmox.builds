@@ -45,10 +45,17 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@v3
-      - name: git secret
-        id: git-secret
+      - name: setup autovars
+        uses: cuchi/jinja2-action@v1.2.0
+        with:
+          template: templates/packer.auto.pkrvars.hcl.j2
+          output_file: ${{ matrix.build }}/windows11.auto.pkrvars.hcl
+          strict: false
+          variables: |
+            proxmox_api_endpoint=${{ secrets.PROXMOX_API_ENDPOINT }}
+            proxmox_node=${{ secrets.PROXMOX_NODE }}
+            proxmox_username=${{ secrets.PROXMOX_USERNAME }}
+            proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
+      - name: Check contents of autovars
         run: |
-          echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
-          gpg --no-tty --batch --yes --pinentry-mode loopback --import private_key.gpg
-          git secret reveal -f -F -v -p "$GPG_PASSWORD"
-          ls -la ${{ matrix.build }}
+          cat ${{ matrix.build }}/windows11.auto.pkrvars.hcl
