@@ -45,10 +45,16 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@v3
+      - name: gnupg config
+        run: |
+          mkdir ~/.gnupg \
+          && cat >> ~/.gnupg/gpg.conf <<EOF
+             no-tty
+             EOF
       - name: git secret
         id: git-secret
         run: |
           echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
           gpg --no-tty --batch --yes --pinentry-mode loopback --import private_key.gpg
-          git secret reveal -f -p "$GPG_PASSWORD"
+          git secret reveal -p "$GPG_PASSWORD"
           ls -la ${{ matrix.build }}
