@@ -37,7 +37,7 @@ jobs:
     env:
       build: win11
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-      GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     strategy:
       fail-fast: true
       matrix:
