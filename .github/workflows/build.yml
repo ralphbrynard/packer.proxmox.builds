@@ -48,7 +48,7 @@ jobs:
       - name: git secret
         id: git-secret
         run: |
-          echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
+          echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
           gpg --no-tty --batch --yes --pinentry-mode loopback --import private_key.gpg
           git secret reveal -f -F -v -p "$GPG_PASSWORD"
           ls -la ${{ matrix.build }}
