@@ -45,7 +45,7 @@ jobs:
             proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
       - id: autovars_output
         run: |
-          AUTOVARS=$(cat ${{ matrix.build }}/windows11.auto.pkrvars.hcl)
+          AUTOVARS=$(cat ./builds/windows/desktop/11/windows11.auto.pkrvars.hcl)
           echo "vars=$AUTOVARS" >> "$GITHUB_OUTPUT"
   win-11:
     runs-on: self-hosted
