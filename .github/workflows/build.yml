@@ -35,6 +35,10 @@ jobs:
             proxmox_node=${{ secrets.PROXMOX_NODE }}
             proxmox_username=${{ secrets.PROXMOX_USERNAME }}
             proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
+      - id: check
+        run: |
+          ls ./builds/windows/desktop/11 \
+          && cat ./builds/windows/desktop/11/windows11.auto.pkrvars.hcl
       - id: list-files
         uses: mirko-felice/list-files-action@v3.0.5
         with:
@@ -47,8 +51,6 @@ jobs:
     needs: win-11-files
     env:
       build: win11
-      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     strategy:
       fail-fast: true
       matrix:
