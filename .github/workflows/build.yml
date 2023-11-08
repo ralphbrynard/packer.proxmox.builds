@@ -31,6 +31,17 @@ jobs:
           ref: ${{ github.ref }}
           path: ${{ matrix.path }}
           ext: .pkr.hcl
+      - name: setup autovars
+        uses: cuchi/jinja2-action@v1.2.0
+        with:
+          template: templates/packer.auto.pkrvars.hcl.j2
+          output_file: ${{ matrix.build }}/windows11.auto.pkrvars.hcl
+          strict: false
+          variables: |
+            proxmox_api_endpoint=${{ secrets.PROXMOX_API_ENDPOINT }}
+            proxmox_node=${{ secrets.PROXMOX_NODE }}
+            proxmox_username=${{ secrets.PROXMOX_USERNAME }}
+            proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
   win-11:
     runs-on: self-hosted
     needs: win-11-files
@@ -45,17 +56,6 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@v3
-      - name: setup autovars
-        uses: cuchi/jinja2-action@v1.2.0
-        with:
-          template: templates/packer.auto.pkrvars.hcl.j2
-          output_file: ${{ matrix.build }}/windows11.auto.pkrvars.hcl
-          strict: false
-          variables: |
-            proxmox_api_endpoint=${{ secrets.PROXMOX_API_ENDPOINT }}
-            proxmox_node=${{ secrets.PROXMOX_NODE }}
-            proxmox_username=${{ secrets.PROXMOX_USERNAME }}
-            proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
       - name: Check contents of autovars
         run: |
           cat ${{ matrix.build }}/windows11.auto.pkrvars.hcl
