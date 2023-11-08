@@ -36,10 +36,6 @@ jobs:
             proxmox_node=${{ secrets.PROXMOX_NODE }}
             proxmox_username=${{ secrets.PROXMOX_USERNAME }}
             proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
-      - id: autovars_output
-        run: |
-          AUTOVARS=$(cat ${{ matrix.path }}/windows11.auto.pkrvars.hcl)
-          echo "vars=$AUTOVARS" >> "$GITHUB_OUTPUT"
       - id: list-files
         uses: mirko-felice/list-files-action@v3.0.5
         with:
