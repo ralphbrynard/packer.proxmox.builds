@@ -12,7 +12,7 @@ env:
   packer_version: 1.9.4
 
 jobs:
-  win-11-files:
+  list-files:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -24,21 +24,6 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@v3
-      - id: autovars
-        uses: cuchi/jinja2-action@v1.2.0
-        with:
-          template: templates/packer.auto.pkrvars.hcl.j2
-          output_file: ${{ matrix.path }}/windows11.auto.pkrvars.hcl
-          strict: false
-          variables: |
-            proxmox_api_endpoint=${{ secrets.PROXMOX_API_ENDPOINT }}
-            proxmox_node=${{ secrets.PROXMOX_NODE }}
-            proxmox_username=${{ secrets.PROXMOX_USERNAME }}
-            proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
-      - id: check
-        run: |
-          ls ./builds/windows/desktop/11 \
-          && cat ./builds/windows/desktop/11/windows11.auto.pkrvars.hcl
       - id: list-files
         uses: mirko-felice/list-files-action@v3.0.5
         with:
@@ -46,20 +31,25 @@ jobs:
           ref: ${{ github.ref }}
           path: ${{ matrix.path }}
           ext: .hcl
-  win-11:
+  build:
     runs-on: self-hosted
-    needs: win-11-files
+    needs: list-files
     env:
       build: win11
     strategy:
       fail-fast: true
       matrix:
-        build: ${{ fromJson(needs.win-11-files.outputs.paths) }}
+        build: ${{ fromJson(needs.list-files.outputs.paths) }}
     steps:
       - id: checkout
         uses: actions/checkout@v3
-      - name: Check contents of autovars
+      - name: setup packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: ${{ env.PACKER_VERSION }}
+      - id: init
         run: |
-          echo ${{ matrix.build }}
+          packer init ${{ matrix.build }}
+
 
 
