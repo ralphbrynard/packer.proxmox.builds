@@ -21,6 +21,7 @@ jobs:
           - ./builds/windows/desktop/11
     outputs:
       paths: ${{ steps.list-files.outputs.paths }}
+      autovars: ${{ steps.autovars_outputs.vars }}
     steps:
       - id: checkout
         uses: actions/checkout@v3
@@ -31,7 +32,7 @@ jobs:
           ref: ${{ github.ref }}
           path: ${{ matrix.path }}
           ext: .pkr.hcl
-      - name: setup autovars
+      - id: autovars
         uses: cuchi/jinja2-action@v1.2.0
         with:
           template: templates/packer.auto.pkrvars.hcl.j2
@@ -42,6 +43,10 @@ jobs:
             proxmox_node=${{ secrets.PROXMOX_NODE }}
             proxmox_username=${{ secrets.PROXMOX_USERNAME }}
             proxmox_api_token=${{ secrets.PROXMOX_API_TOKEN }}
+      - id: autovars_output
+        run: |
+          AUTOVARS=$(cat ${{ matrix.build }}/windows11.auto.pkrvars.hcl)
+          echo "vars=$AUTOVARS" >> "$GITHUB_OUTPUT"
   win-11:
     runs-on: self-hosted
     needs: win-11-files
@@ -58,4 +63,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Check contents of autovars
         run: |
-          cat ./builds/windows/desktop/11/windows11.auto.pkrvars.hcl
+          echo ${{ needs.win-11-files.outputs.vars }}
+
+
