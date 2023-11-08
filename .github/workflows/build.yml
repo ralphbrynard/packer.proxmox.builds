@@ -30,7 +30,7 @@ jobs:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
           path: ${{ matrix.path }}
-          ext: .hcl
+          ext: .pkr.hcl
   build:
     runs-on: self-hosted
     needs: list-files
