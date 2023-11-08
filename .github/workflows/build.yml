@@ -21,7 +21,6 @@ jobs:
           - ./builds/windows/desktop/11
     outputs:
       paths: ${{ steps.list-files.outputs.paths }}
-      autovars: ${{ steps.autovars_outputs.vars }}
     steps:
       - id: checkout
         uses: actions/checkout@v3
