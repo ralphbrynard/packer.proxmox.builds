@@ -2,15 +2,8 @@
 **/.cache
 **/.config
 **packer_cache
+**auto.pkrvars.hcl
 
 # Manifest files
 **/manifests/*
-act.secrets
-!*.secret
-secrets/id_ecdsa_ansible
-secrets/id_ecdsa_ansible.pub
-secrets/id_ecdsa_debian
-secrets/id_ecdsa_debian.pub
-secrets/id_ecdsa_packer
-secrets/id_ecdsa_packer.pub
-builds/windows/desktop/11/windows11.auto.pkrvars.hcl
+
