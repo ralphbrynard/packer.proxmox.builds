@@ -1,0 +1,15 @@
+---
+- become: true
+  become_method: sudo
+  debugger: never
+  gather_facts: true
+  hosts: localhost
+  vars:
+    vm_guest_os_family: windows
+    debug_enabled: false
+  roles:
+    - base
+#    - base
+#    - users
+#    - configure
+#    - clean

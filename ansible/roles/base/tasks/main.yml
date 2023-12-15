@@ -1,0 +1,5 @@
+---
+# tasks file for base
+- name: "{{ task_name }}"
+  include_tasks: windows.yml
+  when: vm_guest_os_family == "windows"
