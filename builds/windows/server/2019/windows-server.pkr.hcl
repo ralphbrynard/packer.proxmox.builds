@@ -18,36 +18,70 @@ packer {
       version = ">= 1.1.3"
       source  = "github.com/hashicorp/proxmox"
     }
-    external = {
-      version = ">= 0.0.2"
-      source  = "github.com/joomcode/external"
-    }
-    sshkey = {
-      version = ">= 1.0.1"
-      source  = "github.com/ivoronin/sshkey"
-    }
   }
 }
 
-## > Data Source Blocks
-#data "external-raw" "virtioURL" {
-#  program = ["${path.cwd}/utils/virtio.sh", "--virtio-url"]
-#}
+## > Data Block
+data "git-repository" "cwd" {}
 
-#data "external-raw" "sha256" {
-#  program = ["${path.cwd}/utils/virtio.sh", "--compute-sha256"]
-#}
-
-data "sshkey" "build_key" {
-  name = var.build_username
+## > Windows Server 2019 Specific Variables
+variable "vm_inst_os_image_datacenter_desktop" {
+  type    = string
+  default = "Windows Server 2019 SERVERDATACENTER"
 }
 
-data "git-repository" "cwd" {}
+variable "vm_inst_os_image_datacenter_core" {
+  type    = string
+  default = "Windows Server 2019 SERVERDATACENTERCORE"
+}
+
+variable "vm_inst_os_image_standard_desktop" {
+  type    = string
+  default = "Windows Server 2019 SERVERSTANDARD"
+}
+
+variable "vm_inst_os_image_standard_core" {
+  type    = string
+  default = "Windows Server 2019 SERVERSTANDARDCORE"
+}
+
+variable "vm_inst_os_kms_key_datacenter" {
+  type    = string
+  default = null
+}
+
+variable "vm_inst_os_kms_key_standard" {
+  type    = string
+  default = null
+}
+
+variable "vm_guest_os_experience_desktop" {
+  type    = string
+  default = "desktop"
+}
+
+variable "vm_guest_os_experience_core" {
+  type    = string
+  default = "core"
+}
+
+variable "vm_guest_os_edition_datacenter" {
+  type    = string
+  default = "datacenter"
+}
+
+variable "vm_guest_os_edition_standard" {
+  type    = string
+  default = "standard"
+}
+
+variable "vm_guest_os_edition_core" {
+  type    = string
+  default = "core"
+}
 
 ## > Local Variables
 locals {
-  #virtio_iso_url    = data.external-raw.virtioURL.result
-  #virtio_iso_sha256 = data.external-raw.sha256.result
   vm_name_datacenter_desktop = join(
     ".",
     [
@@ -66,6 +100,60 @@ locals {
       )
     ]
   )
+  vm_name_datacenter_core = join(
+    ".",
+    [
+      join("",
+        [
+          replace("${var.vm_guest_os_family}", "windows", "win"),
+          replace("${var.vm_guest_os_name}", "server", "srv"),
+          "${var.vm_guest_os_version}"
+        ]
+      ),
+      join("",
+        [
+          replace("${var.vm_guest_os_edition_datacenter}", "datacenter", "dc"),
+          "${var.vm_guest_os_experience_core}"
+        ]
+      )
+    ]
+  )
+  vm_name_standard_desktop = join(
+    ".",
+    [
+      join("",
+        [
+          replace("${var.vm_guest_os_family}", "windows", "win"),
+          replace("${var.vm_guest_os_name}", "server", "srv"),
+          "${var.vm_guest_os_version}"
+        ]
+      ),
+      join("",
+        [
+          replace("${var.vm_guest_os_edition_standard}", "standard", "std"),
+          "${var.vm_guest_os_experience_desktop}"
+        ]
+      )
+    ]
+  )
+  vm_name_standard_core = join(
+    ".",
+    [
+      join("",
+        [
+          replace("${var.vm_guest_os_family}", "windows", "win"),
+          replace("${var.vm_guest_os_name}", "server", "srv"),
+          "${var.vm_guest_os_version}"
+        ]
+      ),
+      join("",
+        [
+          replace("${var.vm_guest_os_edition_standard}", "standard", "std"),
+          "${var.vm_guest_os_experience_core}"
+        ]
+      )
+    ]
+  )
   build_by           = "Built by: HashiCorp Packer ${packer.version}"
   build_date         = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_version      = data.git-repository.cwd.head
@@ -80,25 +168,15 @@ locals {
 }
 
 ## > Build block
-source "null" "packer-iso" {
-  communicator = "none"
-}
-
 build {
-  name = "drivers"
-  source "source.null.packer-iso" {}
+  name = "windows-server-2019"
 
-  provisioner "shell-local" {
-    environment_vars = [
-      "PACKER_CACHE_DIR=${path.cwd}/packer_cache"
-    ]
-    inline = ["${path.cwd}/utils/virtio-drivers.sh ${var.vm_guest_os_version}"]
-  }
-}
-
-build {
-  name = "windows-server-2019-datacenter-desktop"
-  source "source.proxmox-iso.datacenter-desktop" {}
+  sources = [
+    "source.proxmox-iso.windows-server-datacenter-dexp",
+    "source.proxmox-iso.windows-server-datacenter-core",
+    "source.proxmox-iso.windows-server-standard-dexp",
+    "source.proxmox-iso.windows-server-standard-core"
+  ]
 
   provisioner "powershell" {
     environment_vars = [
@@ -107,12 +185,6 @@ build {
     elevated_user     = var.build_username
     elevated_password = var.build_password
     scripts           = formatlist("${path.cwd}/%s", var.scripts)
-  }
-
-  provisioner "powershell" {
-    elevated_user     = var.build_username
-    elevated_password = var.build_password
-    inline            = var.inline
   }
 
   provisioner "windows-update" {
@@ -125,6 +197,28 @@ build {
       "exclude:$_.InstallationBehavior.CanRequestUserInput",
       "include:$true"
     ]
+
     restart_timeout = "120m"
+  }
+
+  post-processor "shell-local" {
+    inline = [" rm -f ${path.cwd}/windows_files/drivers/*"]
+  }
+
+  post-processor "manifest" {
+    output = local.manifest_output
+    strip_path = true
+    strip_time = true
+    custom_data = {
+      build_username           = var.build_username
+      build_date               = local.build_date
+      build_version            = local.build_version
+      vm_cpu_cores             = var.vm_cpu_cores
+      vm_cpu_count             = var.vm_cpu_count
+      vm_disk_size             = var.vm_disk_size
+      vm_firmware              = var.vm_firmware
+      vm_mem_size              = var.vm_mem_size
+      vm_network_card          = var.vm_network_card      
+    }
   }
 }

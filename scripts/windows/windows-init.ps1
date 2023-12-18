@@ -38,15 +38,15 @@ $uri = [System.Uri]$url
 $rootUrl = $uri.GetLeftPart([System.UriPartial]::Authority)
 
 try {
-    $response = Invoke-WebRequest -Uri $url -MaximumRedirection 0 -ErrorAction Stop
+    $response = Invoke-WebRequest -Uri $url -MaximumRedirection 0 -ErrorAction Stop -UseBasicParsing
     $link = [regex]::Match($response.Content, 'href="([^"]*latest-qemu-ga[^"]*)"').Groups[1].Value
     if (-not [string]::IsNullOrEmpty($link)) {
         $full_url = "$url$link"
-        $response = (Invoke-WebRequest -Uri $full_url -MaximumRedirection 1 -ErrorAction Stop)
+        $response = (Invoke-WebRequest -Uri $full_url -MaximumRedirection 1 -ErrorAction Stop -UseBasicParsing)
         $redirected_url = [regex]::Match($response.Content, 'href="([^"]*qemu-ga[^"]*)"').Groups[1].Value
         $download_url = "$rootUrl$redirected_url"
         $arch = if ([Environment]::Is64BitOperatingSystem) { "x86_64" } else { "i386" }
-        $msi_link = (Invoke-WebRequest -Uri $download_url -ErrorAction Stop).Content
+        $msi_link = (Invoke-WebRequest -Uri $download_url -ErrorAction Stop -UseBasicParsing).Content
         $htmlContent = "$msi_link"
         $regexPattern = '<a href="([^"]*qemu-ga-win-[^"]*/)">([^<]+)</a>\s+([0-9-]+\s[0-9:]+)'
         $matches = [regex]::Matches($htmlContent, $regexPattern)
@@ -80,13 +80,13 @@ try {
         if (-not [string]::IsNullOrEmpty($msi_link)) {
             $full_msi_link = "$msi_link"
             Write-Output "Downloading QEMU GA MSI Installer..."
-            Invoke-WebRequest -Uri $full_msi_link -OutFile "qemu-ga-$arch.msi"
+            Invoke-WebRequest -Uri $full_msi_link -OutFile "$env:TEMP/qemu-ga-$arch.msi"
             Write-Output "Download completed: qemu-ga-$arch.msi"
 
             # Run the downloaded MSI installer.
             Write-Output "Running QEMU GA MSI Installer..."
             $logFilePath="$env:TEMP/quemu-ga-installation.log"
-            Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "qemu-ga-$arch.msi", "/L*v", $logFilePath
+            Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "$env:TEMP\qemu-ga-$arch.msi", "/L*v", $logFilePath
             Write-Output "Installation of QEMU GA MSI completed."
         }
         else {

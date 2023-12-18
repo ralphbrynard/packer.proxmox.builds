@@ -3,3 +3,4 @@
 - name: "{{ task_name }}"
   include_tasks: windows.yml
   when: vm_guest_os_family == "windows"
+  loop: "{{ windows_tasks }}"

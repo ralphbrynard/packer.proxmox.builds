@@ -2,41 +2,6 @@
 # Windows
 
 - block:
-  - name: "Getting VirtIO Drivers for Windows build."
-    ansible.builtin.set_fact:
-      url: "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/"
-  - ansible.builtin.debug:
-      var: url
-    when: debug_enabled == true
-  - ansible.builtin.shell:
-      executable: /bin/bash
-      cmd: |
-        curl -Ls "{{ url }}" | grep -oP 'href="\K([^"]*latest-virtio[^"]*)'
-    register: link
-  - ansible.builtin.set_fact:
-      full_url: '{{ url }}{{ link.stdout }}'
-  - ansible.builtin.debug:
-      var: full_url
-  - ansible.builtin.shell:
-      executable: /bin/bash
-      cmd: |
-        curl -Ls -o /dev/null -w %{url_effective} {{ full_url }}
-    register: redirected_url
-  - ansible.builtin.debug:
-      var: redirected_url.stdout
-  - ansible.builtin.shell:
-      executable: /bin/bash
-      cmd: |
-        curl -Ls "{{ redirected_url.stdout }}" | grep -oP 'href="\K([^"]*virtio-win\.iso[^"]*)'
-    register: iso_link
-  - ansible.builtin.debug:
-      var: iso_link.stdout
-    when: debug_enabled == true
-  - ansible.builtin.set_fact:
-      full_iso_link: '{{ redirected_url.stdout }}{{ iso_link.stdout }}'
-  - ansible.builtin.debug:
-      var: full_iso_link
-    when: debug_enabled == true
-  - ansible.builtin.uri:
-      url: '{{ full_iso_link }}'
-      dest: /tmp
+  - name: "Debug Ansible Facts"
+    ansible.builtin.debug:
+      var: ansible_facts

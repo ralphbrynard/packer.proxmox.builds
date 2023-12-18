@@ -1,12 +1,9 @@
 ---
 - become: true
-  become_method: sudo
+  become_method: runas
   debugger: never
   gather_facts: true
-  hosts: localhost
-  vars:
-    vm_guest_os_family: windows
-    debug_enabled: false
+  hosts: all
   roles:
     - base
 #    - base

@@ -33,36 +33,6 @@ variable "vm_guest_os_timezone" {
   default = "UTC"
 }
 
-variable "vm_inst_os_image_datacenter_desktop" {
-  type    = string
-  default = "Windows Server 2019 SERVERDATACENTER"
-}
-
-variable "vm_inst_os_kms_key_datacenter" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_experience_desktop" {
-  type    = string
-  default = "desktop"
-}
-
-variable "vm_guest_os_edition_datacenter" {
-  type    = string
-  default = "datacenter"
-}
-
-variable "vm_guest_os_edition_standard" {
-  type    = string
-  default = "standard"
-}
-
-variable "vm_guest_os_edition_core" {
-  type    = string
-  default = "core"
-}
-
 variable "enable_cloud_init" {
   type        = bool
   description = <<EOF
@@ -98,12 +68,12 @@ variable "common_remove_cdrom" {
 
 variable "common_iso_datastore" {
   type    = string
-  default = "local:"
+  description = "[Required] The ISO datastore on the Proxmox host/cluster where ISO files for installation will be used, or uploaded."
 }
 
 variable "common_vm_datastore" {
   type    = string
-  default = "local-lvm"
+  description = "[Required] The VM disk datastore on the Proxmox host/cluster where the VM disk will be stored."
 }
 
 ## > Proxmox Credentials
@@ -149,6 +119,7 @@ variable "proxmox_host" {
 
 variable "proxmox_insecure_tls" {
   type    = bool
+  description = "[Optional] Whether Packer should validate the Proxmox host/cluster certificate. Defaults to `false`"
   default = true
 }
 
@@ -205,7 +176,7 @@ variable "vm_cpu_type" {
 
 variable "vm_boot_wait" {
   type    = string
-  default = "15m"
+  default = "5s"
 }
 
 variable "enable_numa" {
@@ -257,7 +228,7 @@ variable "inline" {
 
 variable "scripts" {
   type    = list(string)
-  default = ["scripts/windows/windows-prepare.ps1", "scripts/windows/windows-init.ps1"]
+  default = ["scripts/windows/windows-prepare.ps1"]
 }
 # > Disk Settings
 variable "vm_disk_size" {
@@ -350,7 +321,8 @@ variable "iso_url" {
 
 variable "iso_storage_pool" {
   type    = string
-  default = "packer_iso"
+  description = "[Optional] The Proxmox storage pool to upload the packer.iso file to."
+  default = null
 }
 
 variable "iso_checksum" {
