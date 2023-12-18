@@ -2,8 +2,9 @@
 output_dir="/tmp"
 iso_file="$output_dir/virtio-win.iso"
 build_version="$1"
-packer_cache="$PACKER_CACHE_DIR"
-base_directory="/mnt/iso/amd64/"
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+windows_files="$(git rev-parse --show-toplevel 2>/dev/null)/windows_files"
+base_directory="/mnt/iso"
 
 # Driver lookup based on build version.
 function driverLookup {
@@ -46,6 +47,30 @@ function driverLookup {
             exit 1
             ;;
     esac
+
+    if [ "$build_version" == "2012" ]; then
+        echo "Getting drivers for Windows Server 2012"
+    elif [ "$build_version" == "2012R2" ]; then
+        echo "Getting drivers for Windows Server 2012R2"
+    elif [ "$build_version" == "2016" ]; then
+        echo "Getting drivers for Windows Server 2016"
+    elif [ "$build_version" == "2019" ]; then
+        echo "Getting drivers for Windows Server 2019"
+    elif [ "$build_version" == "2022" ]; then
+       echo "Getting drivers for Windows Server 2022"
+    elif [ "$build_version" == "2008" ]; then
+        echo "Getting drivers for Windows Server 2008R2"
+    elif [ "$build_version" == "10" ]; then
+        echo "Getting drivers for Windows 10"
+    elif [ "$build_version" == "11" ]; then
+        echo "Getting drivers for Windows 11"
+    elif [ "$build_version" == "8" ]; then
+        echo "Getting drivers for Windows 8"
+    elif [ "$build_version" == "8.1"]; then
+        echo "Getting drivers for Windows 8.1"
+    elif [ "$build_version" == "7"]; then
+        echo "Getting drivers for Windows 7"
+    fi
 }
 
 # Function to get the latest download link for the virtio.iso file
@@ -71,14 +96,13 @@ function virtioURL {
 # Download the latest ISO file.
 function downloadISO {
     local virtio_iso_url=$(virtioURL)
-
-    curl -L -o "$iso_file" "$virtio_iso_url"
+    echo "Downloading latest virtio-win.iso"
+    curl -L -o "$iso_file" "$virtio_iso_url" --progress-bar
 }
 
 # Mount the ISO
 function mountISO {
     local mount_point="/mnt/iso"
-
     if sudo mount | grep -q "$iso_file on $mount_point"; then
         echo "ISO file is already mounted at $mount_point"
     else
@@ -94,12 +118,16 @@ function mountISO {
 
 # Copy driver files to a destination directory, including a "drivers" subdirectory
 function copyDrivers {
+    local vioscsi="$base_directory/amd64/$driver_directory"
+    local vioserial="$base_directory/vioserial/$driver_directory/amd64"
     local src="$base_directory$driver_directory"
-    local dest="$packer_cache"
+    local dest="$windows_files"
 
-    if [ ! -d "$src" ]; then
-        echo "Driver directory '$src' not found in the mounted ISO."
+    if [ ! -d "$vioscsi" ]; then
+        echo "vioscsi driver directory not found in the mounted ISO."
         exit 1
+    elif [ ! -d "$vioserial" ]; then
+        echo "vioserial driver directory not found in the mounted ISO."
     fi
 
     if [ ! -d "$dest" ]; then
@@ -112,15 +140,18 @@ function copyDrivers {
         mkdir "$dest/drivers"
     fi
 
-    echo "Copying driver files from '$src' to '$dest/drivers':"
-    cp -rv "$src"/* "$dest/drivers"
+    echo "Copying driver files from '$vioscsi' to '$dest/drivers':"
+    cp -rv "$vioscsi"/* "$dest/drivers"
+
+    echo "Copying driver files from '$vioserial' to '$dest/drivers'"
+    cp -rv "$vioserial"/*  "$dest/drivers"
 }
 
 
 # Unmount the ISO
 function unmountISO {
     local mount_point="/mnt/iso"
-
+    echo "Unmounting .ISO file"
     if sudo mount | grep -q "$iso_file on $mount_point"; then
         sudo umount "$mount_point"
         if [ $? -eq 0 ]; then
@@ -133,6 +164,7 @@ function unmountISO {
 
 # Remove the ISO file
 function removeISO {
+    echo "Cleaning up"
     if [ -f "$iso_file" ]; then
         rm -f "$iso_file"
         echo "Removed ISO file: $iso_file"
