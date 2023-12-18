@@ -9,5 +9,5 @@ proxmox_api_token = ""
 ## > Proxmox Settings
 proxmox_host = ""
 proxmox_insecure_tls = true
-proxmox_resource_pool = ""
+proxmox_resource_pool = "packer"
 enable_proxmox_firewall = false

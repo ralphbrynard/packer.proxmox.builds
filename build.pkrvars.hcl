@@ -2,19 +2,20 @@
 # > Description: Build variables for Packer builds.
 
 ## > Communicator Credentials
-build_username = "vagrant"
-build_password = "V@gran+!"
+build_username = ""
+build_password = ""
 
 ## > Virtual Machine Settings
 vm_bridge_interface = "vmbr0"
-vm_mem_size = 2048
-vm_cpu_cores = 1
-vm_cpu_count = 1
+vm_mem_size = 4096
+vm_cpu_cores = 2
+vm_cpu_count = 2
 vm_cpu_type = "kvm64"
 vm_disk_controller_type = "virtio-scsi-single"
 vm_network_card = "e1000"
-vm_nic_vlan_tag = "12"
-iso_storage_pool = ""
+vm_nic_vlan_tag = 13
+iso_storage_pool = "packer_iso"
+vm_disk_size = "64G"
 
 ## > Windows Settings
 enable_windows_secure_boot = false
