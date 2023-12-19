@@ -51,9 +51,11 @@ jobs:
       - name: Split last string in build_paths
         id: split-path
         run: |
-            win_ver=$(basename "${{ matrix.build_paths }}")
-            echo "win_ver=$win_ver" >> $GITHUB_OUTPUT
+          win_ver=$(basename "${{ matrix.build_paths }}")
+          echo "win_ver=$win_ver" >> $GITHUB_OUTPUT
         shell: bash
       - name: Conditional step - Run virtio-drivers.sh if build is a Windows build
         if: contains(${{ matrix.build_paths }}, 'windows')
-        run: echo "This step runs only when 'windows' is in the path"
+        run: |
+          $GITHUB_WORKSPACE/utils/virtio-drivers.sh ${{ steps.split-path.outputs.win_ver }}
+
