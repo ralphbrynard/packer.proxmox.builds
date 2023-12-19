@@ -1,0 +1,37 @@
+name: CI/CD Packer Builds
+on:
+  push:
+    branches: [dev]
+
+permissions: read-all
+
+env: 
+  PACKER_VERSION: 1.9.4
+  PKR_VAR_proxmox_endpoint: ${{ secrets.PROXMOX_ENDPOINT }}
+  PKR_VAR_proxmox_username: ${{ secrets.PROXMOX_USERNAME }}
+  PKR_VAR_proxmox_api_token: ${{ secrets.PROXMOX_API_TOKEN }}
+  PKR_VAR_proxmox_host: ${{ secrets.PROXMOX_HOST }}
+  PKR_VAR_proxmox_insecure_tls: ${{ secrets.PROXMOX_INSECURE_TLS }}
+  PKR_VAR_proxmox_resource_pool: "packer"
+  PKR_VAR_enable_proxmox_firewall: ${{ secrets.ENABLE_PROXMOX_FIREWALL }}
+  PKR_VAR_build_username: ${{ secrets.BUILD_USERNAME }}
+  PKR_VAR_build_password: ${{ secrets.BUILD_PASSWORD }}
+  PKR_VAR_common_template_conversion: true
+  PKR_VAR_common_ip_wait_timeout: "20m"
+  PKR_VAR_common_remove_cdrom: true
+  PKR_VAR_common_iso_datastore: "local:"
+  PKR_VAR_common_vm_datastore: "local-lvm"
+  PKR_VAR_communicator_use_proxy: false
+  PKR_VAR_communicator_host: null
+
+jobs:
+  list-files:
+      runs-on: self-hosted
+      strategy:
+        fail-fast: true
+        matrix:
+          build_path:
+            - ./builds/windows/server/2019
+            - ./builds/windows/server/2022
+      outputs:
+        paths: ${{ steps.list-files.outputs.paths }}

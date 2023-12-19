@@ -159,6 +159,104 @@ menu_option_3() {
     echo "Build Complete." 
 }
 
+menu_option_4() {
+    INPUT_PATH="$SCRIPT_PATH"/builds/windows/server/2022
+    echo -e "\nCONFIRM: Build all Windows Server 2022 Templates for Proxmox?"
+    echo -e "\nContinue? (y/n)"
+    read -r REPLY
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+
+    ### Build Windows Server 2022 Template for Proxmox. ###
+    echo "Building all Windows Server 2022 Template for Proxmox..."
+
+    ### Initialize Packer ###
+    echo "Initializing Hashicorp Packer and required plugins..."
+    packer init "$INPUT_PATH"
+
+    ### Start the build ###
+    echo "Starting the build...."
+    echo "Running script to get required drivers for Windows build."
+    ./utils/virtio-drivers.sh "2022"
+    echo "packer build -force -on-error=ask $debug_option"
+    packer build -force -on-error=ask $debug_option \
+        -var-file="$CONFIG_PATH/proxmox.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/common.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
+        "$INPUT_PATH"
+    
+    ### Build complete ###
+    echo "Build Complete."
+}
+
+menu_option_5() {
+    INPUT_PATH="$SCRIPT_PATH"/builds/windows/server/2022
+    echo -e "\nCONFIRM: Build Microsoft Windows Server 2022 Standard Templates for Proxmox?"
+    echo -e "\nContinue? (y/n)"
+    read -r REPLY
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+
+    ### Build Microsoft Windows Server 2022 Standard Templates for Proxmox. ###
+    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."   
+
+    ### Initialize Packer ###
+    echo "Initializing Hashicorp Packer and required plugins..."
+    packer init "$INPUT_PATH"
+
+    ### Start the build ###
+    echo "Starting the build...."
+    echo "Running script to get required drivers for Windows build."
+    ./utils/virtio-drivers.sh "2022"
+    echo "packer build -force -on-error=ask $debug_option"
+    packer build -force -on-error=ask $debug_option \
+        --only windows-server-2022.proxmox-iso.windows-server-standard-dexp,windows-server-2019.proxmox-iso.windows-server-standard-core \
+        -var-file="$CONFIG_PATH/proxmox.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/common.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
+        "$INPUT_PATH"
+    
+    ### Build complete ###
+    echo "Build Complete." 
+}
+
+menu_option_6() {
+    INPUT_PATH="$SCRIPT_PATH"/builds/windows/server/2022
+    echo -e "\nCONFIRM: Build Microsoft Windows Server 2022 Standard Templates for Proxmox?"
+    echo -e "\nContinue? (y/n)"
+    read -r REPLY
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+
+    ### Build Microsoft Windows Server 2022 Datacenter Templates for Proxmox. ###
+    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."   
+
+    ### Initialize Packer ###
+    echo "Initializing Hashicorp Packer and required plugins..."
+    packer init "$INPUT_PATH"
+
+    ### Start the build ###
+    echo "Starting the build...."
+    echo "Running script to get required drivers for Windows build."
+    ./utils/virtio-drivers.sh "2022"
+    echo "packer build -force -on-error=ask $debug_option"
+    packer build -force -on-error=ask $debug_option \
+        --only windows-server-2022.proxmox-iso.windows-server-datacenter-dexp,windows-server-2019.proxmox-iso.windows-server-datacenter-core \
+        -var-file="$CONFIG_PATH/proxmox.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/common.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
+        -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
+        "$INPUT_PATH"
+    
+    ### Build complete ###
+    echo "Build Complete." 
+}
+
 press_enter() {
   cd "$SCRIPT_PATH"
   echo -n "Press Enter to continue."
@@ -190,6 +288,9 @@ until [ "$selection" = "0" ]; do
     echo "          1 - Windows Server 2019 - All"
     echo "          2 - Windows Server 2019 - Standard Only"
     echo "          3 - Windows Server 2019 - Datacenter Only"
+    echo "          4 - Windows Server 2022 - All"
+    echo "          5 - Windows Server 2022 - Standard Only"
+    echo "          6 - Windows Server 2022 - Datacenter Only"
     echo ""
     echo "          Other:"
     echo "              I - Information"
@@ -201,6 +302,9 @@ until [ "$selection" = "0" ]; do
         1 ) clear ; menu_option_1 ; press_enter ;;
         2 ) clear ; menu_option_2 ; press_enter ;;
         3 ) clear ; menu_option_3 ; press_enter ;;
+        4 ) clear ; menu_option_4 ; press_enter ;;
+        5 ) clear ; menu_option_5 ; press_enter ;;
+        6 ) clear ; menu_option_6 ; press_enter ;;
         i|I ) clear ; info ; press_enter ;;
         q|Q ) clear ; exit ;;
         * ) clear ; incorrect_selection ; press_enter ;;

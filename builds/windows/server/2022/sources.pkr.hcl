@@ -2,7 +2,7 @@
 # > Description: Sources file for various Packer builds
 # > 'proxmox-iso' builder
 
-## > Windows Server 2019 Datacenter Desktop Experience
+## > Windows Server 2022 Datacenter Desktop Experience
 source "proxmox-iso" "windows-server-datacenter-dexp" {
   // Proxmox Credentials
   proxmox_url = var.proxmox_endpoint
@@ -113,7 +113,7 @@ source "proxmox-iso" "windows-server-datacenter-dexp" {
   template_description = var.common_template_conversion ? local.build_description : null
 }
 
-## > Windows Server 2019 Datacenter Core
+## > Windows Server 2022 Datacenter Core
 source "proxmox-iso" "windows-server-datacenter-core" {
   // Proxmox Credentials
   proxmox_url = var.proxmox_endpoint
@@ -225,7 +225,7 @@ source "proxmox-iso" "windows-server-datacenter-core" {
   template_description = var.common_template_conversion ? local.build_description : null
 }
 
-## > Windows Server 2019 Standard Desktop Experience
+## > Windows Server 2022 Standard Desktop Experience
 source "proxmox-iso" "windows-server-standard-dexp" {
   // Proxmox Credentials
   proxmox_url = var.proxmox_endpoint

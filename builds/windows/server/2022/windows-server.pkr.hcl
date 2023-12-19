@@ -113,7 +113,7 @@ locals {
 
 ## > Build block
 build {
-  name = "windows-server-2019"
+  name = "windows-server-2022"
 
   sources = [
     "source.proxmox-iso.windows-server-datacenter-dexp",

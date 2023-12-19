@@ -2,7 +2,6 @@
 **/.cache
 **/.config
 ./packer_cache/drivers*
-**auto.pkrvars.hcl
 
 # Manifest files
 **/manifests/*

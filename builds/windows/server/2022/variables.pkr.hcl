@@ -3,7 +3,6 @@
 # > 'proxmox-iso' builder
 
 ## > OS Installation Variables
-## > Windows Server 2019 Specific Variables
 variable "vm_inst_os_image_datacenter_desktop" {
   type    = string
   default = null
