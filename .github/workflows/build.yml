@@ -35,3 +35,11 @@ jobs:
             - ./builds/windows/server/2022
       outputs:
         paths: ${{ steps.list-files.outputs.paths }}
+      steps:
+        - name: list build files
+          uses: mirko-felice/list-files-action@v3.0.5
+          with:
+            repo: ${{ github.repository }}
+            ref: ${{ github.ref }}
+            path: ${{ matrix.build_path }}
+            ext: .pkr.hcl
