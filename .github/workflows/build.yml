@@ -64,8 +64,10 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: |
-            builds:
-              - '${{ matrix.paths }}/**'
+            win_2022:
+              - 'builds/windows/server/2022/**'
+            win_2019:
+              - 'builds/windows/server/2019/**'
       - name: Filtered outputs
         if: steps.filter.outputs.builds == 'true'
         run: echo "Files changed!"
