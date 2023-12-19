@@ -24,33 +24,15 @@ env:
   PKR_VAR_communicator_use_proxy: false
   PKR_VAR_communicator_host: null
 
-jobs:
-  list-files:
-      runs-on: self-hosted
-      strategy:
-        fail-fast: true
-        matrix:
-          build_path:
-            - ./builds/windows/server/2019
-            - ./builds/windows/server/2022
-      outputs:
-        paths: ${{ steps.list-files.outputs.paths }}
-      steps:
-        - name: list build files
-          uses: mirko-felice/list-files-action@v3.0.5
-          with:
-            repo: ${{ github.repository }}
-            ref: ${{ github.ref }}
-            path: ${{ matrix.build_path }}
-            ext: .pkr.hcl
-  
+jobs:  
   packer-build:
-    needs: list-files
     runs-on: self-hosted
     strategy:
       fail-fast: true
       matrix:
-        paths: ${{ fromJson(needs.list-files.outputs.paths) }}
+        build_paths: 
+          - ./builds/windows/server/2019
+          - ./builds/windows/server/2022
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -64,10 +46,8 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: |
-            win_2022:
-              - 'builds/windows/server/2022/**'
-            win_2019:
-              - 'builds/windows/server/2019/**'
+            builds:
+              - '${{ matrix.build_paths }}/**'
       - name: Filtered outputs
         if: steps.filter.outputs.builds == 'true'
         run: echo "Files changed!"
