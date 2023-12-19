@@ -55,5 +55,5 @@ jobs:
             echo "win_ver=$win_ver" >> $GITHUB_OUTPUT
         shell: bash
       - name: Conditional step - Run virtio-drivers.sh if build is a Windows build
-        if: contains(steps.split-path.outputs.win_ver, 'windows')
+        if: contains(${{ matrix.build_paths }}, 'windows')
         run: echo "This step runs only when 'windows' is in the path"
