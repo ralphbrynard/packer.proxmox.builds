@@ -48,6 +48,12 @@ jobs:
           filters: |
             builds:
               - '${{ matrix.build_paths }}/**'
-      - name: Filtered outputs
-        if: steps.filter.outputs.builds == 'true'
-        run: echo "Files changed!"
+      - name: Split last string in build_paths
+        id: split-path
+        run: |
+            win_ver=$(basename "${{ matrix.build_paths }}")
+            echo "::set-output vers=win_ver::$win_ver"
+        shell: bash
+      - name: Conditional step - Run virtio-drivers.sh if build is a Windows build
+        if: contains(steps.split-path.outputs.win_ver, 'windows')
+        run: echo "This step runs only when 'windows' is in the path"
