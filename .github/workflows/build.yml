@@ -43,3 +43,29 @@ jobs:
             ref: ${{ github.ref }}
             path: ${{ matrix.build_path }}
             ext: .pkr.hcl
+  
+  packer-build:
+    needs: list-files
+    runs-on: self-hosted
+    strategy:
+      fail-fast: true
+      matrix:
+        paths: ${{ fromJson(needs.list-files.outputs.paths) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PACKER_VERSION }}
+      - name: Filter for changed files
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            builds:
+              - '${{ matrix.paths }}/**'
+      - name: Filtered outputs
+        if: steps.filter.outputs.builds == 'true'
+        run: echo "Files changed!"
