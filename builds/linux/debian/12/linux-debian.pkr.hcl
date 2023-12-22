@@ -13,6 +13,10 @@ packer {
       version = ">= 1.1.3"
       source  = "github.com/hashicorp/proxmox"
     }
+    git = {
+      source  = "github.com/ethanmdavidson/git"
+      version = ">= 0.4.3"
+    }    
     sshkey = {
       version = ">= 1.0.1"
       source  = "github.com/ivoronin/sshkey"
