@@ -99,5 +99,6 @@ jobs:
         id: build
         run: |
          packer build \
-         ${{ matrix.build_paths }}/.
+              -var-file ${{ matrix.var_files }} \
+              ${{ matrix.build_paths }}/.
 
