@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - dev
+    branches:
+      - dev
 
 permissions: read-all
 
@@ -36,8 +38,8 @@ jobs:
       matrix:
         build_paths: 
           - ./builds/linux/debian/12
-          - ./builds/windows/server/2019
-          - ./builds/windows/server/2022
+          #- ./builds/windows/server/2019
+          #- ./builds/windows/server/2022
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -55,13 +57,14 @@ jobs:
               - '${{ matrix.build_paths }}/**'
       - name: Split last string in build_paths
         if: contains(matrix.build_paths, 'windows')
+        if: contains(matrix.build_paths, 'windows')
         id: split-path
         run: |
           win_ver=$(basename "${{ matrix.build_paths }}")
           echo "win_ver=$win_ver" >> $GITHUB_OUTPUT
         shell: bash
       - name: Conditional step - Run virtio-drivers.sh if build is a Windows build
-        if: contains(${{ matrix.build_paths }}, 'windows')
+        if: contains(matrix.build_paths, 'windows')
         run: |
           $GITHUB_WORKSPACE/utils/virtio-drivers-docker.sh ${{ steps.split-path.outputs.win_ver }}
       - name: Packer init
@@ -70,6 +73,8 @@ jobs:
       - name: Packer Build
         id: build
         run: |
+         packer build \
+         ${{ matrix.build_paths }}/.
          packer build \
          ${{ matrix.build_paths }}/.
 
