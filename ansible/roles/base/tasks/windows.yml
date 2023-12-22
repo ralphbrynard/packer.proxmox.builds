@@ -1,7 +1,0 @@
----
-# Windows
-
-- block:
-  - name: "Debug Ansible Facts"
-    ansible.builtin.debug:
-      var: ansible_facts

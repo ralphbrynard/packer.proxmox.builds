@@ -1,12 +1,11 @@
 ---
 - become: true
-  become_method: runas
+  become_method: sudo
   debugger: never
   gather_facts: true
   hosts: all
   roles:
     - base
-#    - base
-#    - users
-#    - configure
-#    - clean
+    - users
+    - configure
+    - clean

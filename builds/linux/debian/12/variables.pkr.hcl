@@ -3,66 +3,6 @@
 # > 'proxmox-iso' builder
 
 ## > OS Installation Variables
-variable "vm_inst_os_image_datacenter_desktop" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_image_datacenter_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_image_standard_desktop" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_image_standard_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_kms_key_datacenter" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_kms_key_standard" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_experience_desktop" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_experience_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_datacenter" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_standard" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_version" {
-  type    = string
-  default = null
-}
-
 variable "vm_guest_os_name" {
   type    = string
   default = null
@@ -88,6 +28,11 @@ variable "vm_guest_os_timezone" {
   default = "UTC"
 }
 
+variable "vm_guest_os_version" {
+  type    = string
+  default = null
+}
+
 variable "enable_cloud_init" {
   type        = bool
   description = <<EOF
@@ -102,6 +47,27 @@ variable "cloud_init_storage_pool" {
    [Optional]  Name of the Proxmox storage pool to store the Cloud-Init CDROM on. If not given, the storage pool of the boot device will be used.
    EOF
   default     = null
+}
+
+## > HTTP Variables
+variable "external_http_ip" {
+  type = string
+  default = null
+}
+
+variable "http_bind_address" {
+  type    = string
+  default = "0.0.0.0"
+}
+
+variable "http_port_min" {
+  type    = number
+  default = 8000
+}
+
+variable "http_port_max" {
+  type    = number
+  default = 8099
 }
 
 ## > Common Variables
@@ -129,6 +95,11 @@ variable "common_iso_datastore" {
 variable "common_vm_datastore" {
   type        = string
   description = "[Required] The VM disk datastore on the Proxmox host/cluster where the VM disk will be stored."
+}
+
+variable "common_data_source" {
+  type    = string
+  default = "disk"
 }
 
 ## > Proxmox Credentials
@@ -275,15 +246,13 @@ variable "packer_vm_interface" {
 }
 
 variable "inline" {
-  type = list(string)
-  default = [
-    "Get-EventLog -LogName * | ForEach { Clear-EventLog -LogName $_.Log }"
-  ]
+  type    = list(string)
+  default = []
 }
 
 variable "scripts" {
   type    = list(string)
-  default = ["scripts/windows/windows-prepare.ps1"]
+  default = []
 }
 # > Disk Settings
 variable "vm_disk_size" {
@@ -386,46 +355,6 @@ variable "iso_checksum" {
 }
 
 # > Communicator Settings
-variable "communicator_winrm_port" {
-  type        = number
-  description = <<EOF
-   [Optional] The port to use for the WinRM communicator. Default is 5985.
-   EOF
-  default     = 5985
-}
-
-variable "communicator_winrm_use_ssl" {
-  type        = bool
-  description = <<EOF
-   [Optional] If true, use HTTPS for WinRM.
-   EOF
-  default     = false
-}
-
-variable "communicator_winrm_insecure" {
-  type        = bool
-  description = <<EOF
-   [Optional]  If true, do not check server certificate chain and host name.
-   EOF
-  default     = true
-}
-
-variable "communicator_winrm_use_ntlm" {
-  type        = bool
-  description = <<EOF
-   [Optional] If true, NTLMv2 authentication (with session security) will be used for WinRM, rather than default (basic authentication), removing the requirement for basic authentication to be enabled within the target guest.
-   EOF
-  default     = false
-}
-
-variable "communicator_use_proxy" {
-  type        = bool
-  description = <<EOF
-   [Optional] SSetting this to true adds the remote host:port to the NO_PROXY environment variable. This has the effect of bypassing any configured proxies when connecting to the remote host. Default to false.
-   EOF
-  default     = false
-}
-
 variable "communicator_host" {
   type        = string
   description = <<EOF
@@ -442,6 +371,11 @@ variable "communicator_timeout" {
   default     = null
 }
 
+variable "communicator_use_proxy" {
+  type    = bool
+  default = false
+}
+
 variable "build_username" {
   type    = string
   default = "sophos"
@@ -451,4 +385,21 @@ variable "build_password" {
   type      = string
   default   = ""
   sensitive = true
+}
+
+variable "ansible_username" {
+  type    = string
+  default = "ansible"
+}
+
+variable "ansible_password" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+# > Additional Settings
+variable "additional_packages" {
+  type    = list(string)
+  default = []
 }

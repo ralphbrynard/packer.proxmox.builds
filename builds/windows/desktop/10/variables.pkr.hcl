@@ -3,57 +3,22 @@
 # > 'proxmox-iso' builder
 
 ## > OS Installation Variables
-variable "vm_inst_os_image_datacenter_desktop" {
+variable "vm_inst_os_image_pro" {
   type    = string
   default = null
 }
 
-variable "vm_inst_os_image_datacenter_core" {
+variable "vm_inst_os_image_ent" {
   type    = string
   default = null
 }
 
-variable "vm_inst_os_image_standard_desktop" {
+variable "vm_guest_os_edition_pro" {
   type    = string
   default = null
 }
 
-variable "vm_inst_os_image_standard_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_kms_key_datacenter" {
-  type    = string
-  default = null
-}
-
-variable "vm_inst_os_kms_key_standard" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_experience_desktop" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_experience_core" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_datacenter" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_standard" {
-  type    = string
-  default = null
-}
-
-variable "vm_guest_os_edition_core" {
+variable "vm_guest_os_edition_ent" {
   type    = string
   default = null
 }
@@ -61,6 +26,16 @@ variable "vm_guest_os_edition_core" {
 variable "vm_guest_os_version" {
   type    = string
   default = null
+}
+
+variable "vm_inst_os_kms_key_ent" {
+    type = string
+    default = null
+}
+
+variable "vm_inst_os_kms_key_pro" {
+    type = string
+    default = null
 }
 
 variable "vm_guest_os_name" {

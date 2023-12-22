@@ -1,7 +1,8 @@
 name: CI/CD Packer Builds
 on:
   push:
-    branches: [dev]
+    branches:
+      - dev
 
 permissions: read-all
 
@@ -22,7 +23,10 @@ env:
   PKR_VAR_common_iso_datastore: "local:"
   PKR_VAR_common_vm_datastore: "local-lvm"
   PKR_VAR_communicator_use_proxy: false
+  PKR_VAR_common_data_source: "http"
   PKR_VAR_communicator_host: null
+  PKR_VAR_ansible_username: ${{ secrets.ANSIBLE_USERNAME }}
+  PKR_VAR_external_http_ip: ${{ secrets.EXTERNAL_HTTP_IP }}
 
 jobs:  
   packer-build:
@@ -31,6 +35,7 @@ jobs:
       fail-fast: true
       matrix:
         build_paths: 
+          - ./builds/linux/debian/12
           - ./builds/windows/server/2019
           - ./builds/windows/server/2022
     steps:
@@ -49,6 +54,7 @@ jobs:
             builds:
               - '${{ matrix.build_paths }}/**'
       - name: Split last string in build_paths
+        if: contains(matrix.build_paths, 'windows')
         id: split-path
         run: |
           win_ver=$(basename "${{ matrix.build_paths }}")
@@ -64,5 +70,6 @@ jobs:
       - name: Packer Build
         id: build
         run: |
-         packer b
+         packer build \
+         ${{ matrix.build_paths }}/.
 

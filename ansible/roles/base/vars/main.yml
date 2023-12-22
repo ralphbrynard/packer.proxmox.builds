@@ -1,4 +1,37 @@
 ---
-# vars file for base
-windows_tasks:
-  - task_name: "Debugging Ansible Facts"
+task_name: "Update the operating system and install additional packages."
+additional_packages:
+  VMware Photon OS:
+    - git
+    - jq
+    - logrotate
+    - minimal
+    - openssl-c_rehash
+    - parted
+    - tar
+    - unzip
+    - wget
+  Debian:
+    - bash-completion
+    - ca-certificates
+    - curl
+    - git
+    - net-tools
+    - unzip
+    - wget
+  RedHat:
+    - ca-certificates
+    - curl
+    - git
+    - net-tools
+    - unzip
+    - vim
+    - wget
+  Suse:
+    - bash-completion
+    - ca-certificates
+    - curl
+    - git-core
+    - net-tools
+    - unzip
+    - wget

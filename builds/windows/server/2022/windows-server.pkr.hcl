@@ -1,5 +1,5 @@
 # > Packer Build File
-# > Description: Packer Windows Server Build file
+# > Description: Packer Windows Server 2022 Build file
 # > 'proxmox-iso' builder 
 
 ## > Packer Configuration Block

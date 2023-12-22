@@ -1,5 +1,5 @@
 # > Packer Build File
-# > Description: Packer Windows Server 2019 Build file
+# > Description: Packer Windows 11 Build file
 # > 'proxmox-iso' builder 
 
 ## > Packer Configuration Block
@@ -26,74 +26,34 @@ data "git-repository" "cwd" {}
 
 ## > Local Variables
 locals {
-  vm_name_datacenter_desktop = join(
+  vm_name_pro = join(
     ".",
     [
       join("",
         [
           replace("${var.vm_guest_os_family}", "windows", "win"),
-          replace("${var.vm_guest_os_name}", "server", "srv"),
           "${var.vm_guest_os_version}"
         ]
       ),
       join("",
         [
-          replace("${var.vm_guest_os_edition_datacenter}", "datacenter", "dc"),
-          "${var.vm_guest_os_experience_desktop}"
+          "${var.vm_guest_os_edition_pro}"
         ]
       )
     ]
   )
-  vm_name_datacenter_core = join(
+  vm_name_ent = join(
     ".",
     [
       join("",
         [
           replace("${var.vm_guest_os_family}", "windows", "win"),
-          replace("${var.vm_guest_os_name}", "server", "srv"),
           "${var.vm_guest_os_version}"
         ]
       ),
       join("",
         [
-          replace("${var.vm_guest_os_edition_datacenter}", "datacenter", "dc"),
-          "${var.vm_guest_os_experience_core}"
-        ]
-      )
-    ]
-  )
-  vm_name_standard_desktop = join(
-    ".",
-    [
-      join("",
-        [
-          replace("${var.vm_guest_os_family}", "windows", "win"),
-          replace("${var.vm_guest_os_name}", "server", "srv"),
-          "${var.vm_guest_os_version}"
-        ]
-      ),
-      join("",
-        [
-          replace("${var.vm_guest_os_edition_standard}", "standard", "std"),
-          "${var.vm_guest_os_experience_desktop}"
-        ]
-      )
-    ]
-  )
-  vm_name_standard_core = join(
-    ".",
-    [
-      join("",
-        [
-          replace("${var.vm_guest_os_family}", "windows", "win"),
-          replace("${var.vm_guest_os_name}", "server", "srv"),
-          "${var.vm_guest_os_version}"
-        ]
-      ),
-      join("",
-        [
-          replace("${var.vm_guest_os_edition_standard}", "standard", "std"),
-          "${var.vm_guest_os_experience_core}"
+          "${var.vm_guest_os_edition_ent}"
         ]
       )
     ]
@@ -113,12 +73,11 @@ locals {
 
 ## > Build block
 build {
-  name = "windows-server-2019"
+  name = "windows-11"
 
   sources = [
-    "source.proxmox-iso.windows-server-datacenter-dexp",
-    "source.proxmox-iso.windows-server-datacenter-core",
-    "source.proxmox-iso.windows-server-standard-dexp"
+    "source.proxmox-iso.windows-desktop-pro",
+    "source.proxmox-iso.windows-desktop-ent"
   ]
 
   provisioner "powershell" {
