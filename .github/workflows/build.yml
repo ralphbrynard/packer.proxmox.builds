@@ -29,8 +29,31 @@ env:
   PKR_VAR_external_http_ip: ${{ secrets.EXTERNAL_HTTP_IP }}
 
 jobs:  
+  list-var-files:
+    runs-on: self-hosted
+    strategy:
+      fail-fast: true
+      matrix:
+        var-file:
+          - ./builds/linux/debian/12
+          - ./builds/windows/server/2019
+          - ./builds/windows/server/2022
+          - ./builds/windows/desktop/10
+          - ./builds/windows/desktop/11
+    outputs:
+      var_file: ${{ steps.list-files.outputs.paths }}
+    steps:
+      - name: List autovars files
+        id: list-files
+        uses: mirko-felice/list-files-action@v3.0.5
+        with:
+          repo: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          path: ${{ matrix.var-file }}
+          ext: .auto.pkrvars.hcl
   packer-build:
     runs-on: self-hosted
+    needs: list-var-files
     strategy:
       fail-fast: true
       matrix:
@@ -38,7 +61,12 @@ jobs:
           - ./builds/linux/debian/12
           #- ./builds/windows/server/2019
           #- ./builds/windows/server/2022
+        var_files: ${{ fromJson(needs.list-var-files.outputs.var_file) }}
     steps:
+      - name: Debug var_files
+        id: debug1
+        run: |
+          echo "${{ matrix.var_files }}"
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup Packer
@@ -70,8 +98,6 @@ jobs:
       - name: Packer Build
         id: build
         run: |
-         packer build \
-         ${{ matrix.build_paths }}/.
          packer build \
          ${{ matrix.build_paths }}/.
 
