@@ -55,7 +55,6 @@ jobs:
               - '${{ matrix.build_paths }}/**'
       - name: Split last string in build_paths
         if: contains(matrix.build_paths, 'windows')
-        if: contains(matrix.build_paths, 'windows')
         id: split-path
         run: |
           win_ver=$(basename "${{ matrix.build_paths }}")
