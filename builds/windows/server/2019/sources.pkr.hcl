@@ -1,8 +1,26 @@
 # > Packer Sources File
 # > Description: Sources file for various Packer builds
 # > 'proxmox-iso' builder
+# > 'vsphere-iso' builder
 
 ## > Windows Server 2019 Datacenter Desktop Experience
+### vSphere
+source "vsphere-iso" "windows-server-datacenter-dexp" {
+  // vCenter Server Endpoint Settings and Credentials
+  vcenter_server = var.vsphere_endpoint
+  username = var.vsphere_username
+  password = var.vsphere_password
+  insecure_connection = var.vsphere_insecure_connection
+
+  //vSphere Settings
+  datacenter = var.vsphere_datacenter
+  cluster = var.vsphere_cluster
+  host = var.vsphere_host
+  datastore = var.vsphere_datastore
+  folder = var.vsphere_folder
+  resource_pool = var.vsphere_resource_pool
+}
+### Proxmox
 source "proxmox-iso" "windows-server-datacenter-dexp" {
   // Proxmox Credentials
   proxmox_url = var.proxmox_endpoint
