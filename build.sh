@@ -47,11 +47,11 @@ else
 fi
 
 menu_banner=$(cat << "EOF"
-    ____             __                ____        _ __    __     
-   / __ \____ ______/ /_____  _____   / __ )__  __(_) /___/ /____ 
-  / /_/ / __  / ___/ //_/ _ \/ ___/  / __  / / / / / / __  / ___/ 
- / ____/ /_/ / /__/ ,< /  __/ /     / /_/ / /_/ / / / /_/ (__  )  
-/_/    \__,_/\___/_/|_|\___/_/     /_____/\__,_/_/_/\__,_/____/   
+    ____             __                ____        _ __    __
+   / __ \____ ______/ /_____  _____   / __ )__  __(_) /___/ /____
+  / /_/ / __  / ___/ //_/ _ \/ ___/  / __  / / / / / / __  / ___/
+ / ____/ /_/ / /__/ ,< /  __/ /     / /_/ / /_/ / / / /_/ (__  )
+/_/    \__,_/\___/_/|_|\___/_/     /_____/\__,_/_/_/\__,_/____/
 EOF
 )
 
@@ -88,7 +88,7 @@ menu_option_1() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
     echo "Build Complete."
 }
@@ -103,7 +103,7 @@ menu_option_2() {
     fi
 
     ### Build Microsoft Windows Server 2019 Standard Templates for Proxmox. ###
-    echo "Building Microsoft Windows Server 2019 Standard Templates for Proxmox..."   
+    echo "Building Microsoft Windows Server 2019 Standard Templates for Proxmox..."
 
     ### Initialize Packer ###
     echo "Initializing Hashicorp Packer and required plugins..."
@@ -121,9 +121,9 @@ menu_option_2() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
-    echo "Build Complete." 
+    echo "Build Complete."
 }
 
 menu_option_3() {
@@ -136,7 +136,7 @@ menu_option_3() {
     fi
 
     ### Build Microsoft Windows Server 2019 Datacenter Templates for Proxmox. ###
-    echo "Building Microsoft Windows Server 2019 Standard Templates for Proxmox..."   
+    echo "Building Microsoft Windows Server 2019 Standard Templates for Proxmox..."
 
     ### Initialize Packer ###
     echo "Initializing Hashicorp Packer and required plugins..."
@@ -154,9 +154,9 @@ menu_option_3() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
-    echo "Build Complete." 
+    echo "Build Complete."
 }
 
 menu_option_4() {
@@ -186,7 +186,7 @@ menu_option_4() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
     echo "Build Complete."
 }
@@ -201,7 +201,7 @@ menu_option_5() {
     fi
 
     ### Build Microsoft Windows Server 2022 Standard Templates for Proxmox. ###
-    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."   
+    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."
 
     ### Initialize Packer ###
     echo "Initializing Hashicorp Packer and required plugins..."
@@ -219,9 +219,9 @@ menu_option_5() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
-    echo "Build Complete." 
+    echo "Build Complete."
 }
 
 menu_option_6() {
@@ -234,7 +234,7 @@ menu_option_6() {
     fi
 
     ### Build Microsoft Windows Server 2022 Datacenter Templates for Proxmox. ###
-    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."   
+    echo "Building Microsoft Windows Server 2022 Standard Templates for Proxmox..."
 
     ### Initialize Packer ###
     echo "Initializing Hashicorp Packer and required plugins..."
@@ -252,9 +252,9 @@ menu_option_6() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         "$INPUT_PATH"
-    
+
     ### Build complete ###
-    echo "Build Complete." 
+    echo "Build Complete."
 }
 
 menu_option_7() {
@@ -477,7 +477,7 @@ menu_option_13() {
         -var-file="$CONFIG_PATH/build.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/proxy.pkrvars.hcl" \
         -var-file="$CONFIG_PATH/ansible.pkrvars.hcl" \
-        "$INPUT_PATH"    
+        "$INPUT_PATH"
 
 }
 
@@ -489,8 +489,6 @@ press_enter() {
 }
 
 info() {
-  echo "Copyright 2023 Broadcom. All Rights Reserved."
-  echo "License: BSD-2"
   echo ""
   echo "GitHub Repository: github.com/ralphbrynard/packer.proxmox.builds/"
   read -r
