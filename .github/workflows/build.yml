@@ -35,11 +35,11 @@ jobs:
       fail-fast: true
       matrix:
         var-file:
-          - ./builds/linux/debian/12
-          - ./builds/windows/server/2019
+          #- ./builds/linux/debian/12
+          #- ./builds/windows/server/2019
           - ./builds/windows/server/2022
-          - ./builds/windows/desktop/10
-          - ./builds/windows/desktop/11
+          #- ./builds/windows/desktop/10
+          #- ./builds/windows/desktop/11
     outputs:
       var_file: ${{ steps.list-files.outputs.paths }}
     steps:
