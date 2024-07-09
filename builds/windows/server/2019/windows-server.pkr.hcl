@@ -1,6 +1,6 @@
 # > Packer Build File
 # > Description: Packer Windows Server 2019 Build file
-# > 'proxmox-iso' builder 
+# > 'proxmox-iso' builder
 
 ## > Packer Configuration Block
 packer {
@@ -17,6 +17,10 @@ packer {
     proxmox = {
       version = ">= 1.1.3"
       source  = "github.com/hashicorp/proxmox"
+    }
+    vsphere = {
+      source  = "github.com/hashicorp/vsphere"
+      version = ">= 1.2.1"
     }
   }
 }

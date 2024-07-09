@@ -58,9 +58,9 @@ jobs:
       fail-fast: true
       matrix:
         build_paths: 
-          - ./builds/linux/debian/12
+          #- ./builds/linux/debian/12
           #- ./builds/windows/server/2019
-          #- ./builds/windows/server/2022
+          - ./builds/windows/server/2022
         var_files: ${{ fromJson(needs.list-var-files.outputs.var_file) }}
     steps:
       - name: Debug var_files
